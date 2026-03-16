@@ -20,11 +20,6 @@
               errorMessage="Mot de passe requis"
             ></app-input>
             
-            <div class="flex items-center gap-2">
-              <input class="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary" id="remember" type="checkbox"/>
-              <label class="block text-sm font-bold text-[#3c1e08]" for="remember">Keep me signed in for 30 days</label>
-            </div>
-            
             <button
               type="submit"
               [disabled]="loginForm.invalid || loading"

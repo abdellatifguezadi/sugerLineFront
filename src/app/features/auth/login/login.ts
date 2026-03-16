@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../shared/components/header/header';
 import { LoginFormComponent } from '../components/login-form/login-form';
 import * as AuthActions from '../store/auth.actions';
@@ -8,7 +9,7 @@ import * as AuthActions from '../store/auth.actions';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, LoginFormComponent, HeaderComponent],
+  imports: [CommonModule, RouterLink, LoginFormComponent, HeaderComponent],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

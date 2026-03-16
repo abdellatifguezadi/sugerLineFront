@@ -1,13 +1,13 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
   
             <app-input
-              label="Email or Username"
-              type="email"
+              label="Username"
+              type="text"
               id="username"
-              placeholder="baker@sugarline.com"
-              icon="mail"
+              placeholder="chef_admin"
+              icon="person"
               [control]="usernameControl"
-              errorMessage="Email valide requis"
+              errorMessage="Username requis"
             ></app-input>
             
             <app-input

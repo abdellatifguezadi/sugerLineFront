@@ -28,7 +28,17 @@ export const selectFullName = createSelector(
   (user) => user?.fullName
 );
 
+export const selectRole = createSelector(
+  selectUser,
+  (user) => user?.role ?? null
+);
+
 export const selectIsAuthenticated = createSelector(
   selectAuthState,
   (state) => state.isAuthenticated
+);
+
+export const selectIsLoading = createSelector(
+  selectAuthState,
+  (state) => state.isLoading
 );

@@ -1,10 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
-import { AuthState } from '../../../models/auth.model';
+import { AuthState, User } from '../../../models/auth.model';
 import * as AuthActions from './auth.actions';
 
-function getStoredUser(): any {
+function getStoredUser(): User | null {
   if (typeof localStorage !== 'undefined') {
-    return JSON.parse(localStorage.getItem('user') || 'null');
+    return JSON.parse(localStorage.getItem('user') || 'null') as User | null;
   }
   return null;
 }
@@ -18,33 +18,58 @@ function isUserStored(): boolean {
 
 export const initialState: AuthState = {
   user: getStoredUser(),
-  isAuthenticated: isUserStored()
+  isAuthenticated: isUserStored(),
+  isLoading: isUserStored()
 };
 
 export const authReducer = createReducer(
   initialState,
+  on(AuthActions.loadUser, (state) => ({
+    ...state,
+    isLoading: true
+  })),
   on(AuthActions.loginSuccess, (state, { response }) => {
-    const user = { 
+    const user: User = {
       id: response.id,
       username: response.username,
       email: response.email,
-      fullName: response.fullName
+      fullName: response.fullName,
+      role: response.role
     };
+
+    const persistedUser: User = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+    };
+
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(persistedUser));
     }
+
     return {
       user,
-      isAuthenticated: true
+      isAuthenticated: true,
+      isLoading: false
     };
   }),
   on(AuthActions.loadUserSuccess, (state, { user }) => {
+    const persistedUser: User = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+    };
+
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(persistedUser));
     }
+
     return {
       user,
-      isAuthenticated: true
+      isAuthenticated: true,
+      isLoading: false
     };
   }),
   on(AuthActions.logout, AuthActions.loadUserFailure, () => {
@@ -53,7 +78,8 @@ export const authReducer = createReducer(
     }
     return {
       user: null,
-      isAuthenticated: false
+      isAuthenticated: false,
+      isLoading: false
     };
   })
 );

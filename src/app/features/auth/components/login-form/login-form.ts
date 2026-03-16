@@ -1,7 +1,8 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '../../../../shared/components/input/input';
+import { LoginRequest } from '../../../../models/auth.model';
 
 @Component({
   selector: 'app-login-form',
@@ -12,12 +13,12 @@ import { InputComponent } from '../../../../shared/components/input/input';
 })
 export class LoginFormComponent {
   @Input() loading = false;
-  @Output() formSubmit = new EventEmitter<any>();
+  @Output() formSubmit = new EventEmitter<LoginRequest>();
   
   private fb = new FormBuilder();
   
   loginForm = this.fb.group({
-    username: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
     motDePasse: ['', [Validators.required]]
   });
 
@@ -31,7 +32,7 @@ export class LoginFormComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.formSubmit.emit(this.loginForm.value);
+      this.formSubmit.emit(this.loginForm.getRawValue() as LoginRequest);
     } else {
       this.loginForm.markAllAsTouched();
     }

@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import * as AuthActions from './auth.actions';
 
@@ -9,6 +10,7 @@ import * as AuthActions from './auth.actions';
 export class AuthEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -32,5 +34,16 @@ export class AuthEffects {
         )
       )
     )
+  );
+
+  redirectAfterLoginSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginSuccess),
+        tap(() => {
+          this.router.navigate(['/admin']);
+        })
+      ),
+    { dispatch: false }
   );
 }

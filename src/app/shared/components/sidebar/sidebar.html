@@ -1,0 +1,58 @@
+<aside class="hidden w-64 flex-col border-r border-primary/10 bg-[#fdfaf7] md:flex">
+  <div class="flex items-center gap-3 p-6">
+    <div class="rounded-lg bg-primary p-2 text-white">
+      <span class="material-symbols-outlined">bakery_dining</span>
+    </div>
+    <div>
+      <h2 class="leading-none text-xl font-black text-primary">SugarLine</h2>
+      @if (isLoading) {
+        <div class="mt-1 h-2.5 w-20 animate-pulse rounded bg-primary/20"></div>
+      } @else {
+        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+          {{ isAdmin ? 'Admin Console' : 'User Console' }}
+        </p>
+      }
+    </div>
+  </div>
+
+  <nav class="flex-1 space-y-1 px-4 py-4">
+    @if (isLoading) {
+      @for (item of skeletonItems; track $index) {
+        <div class="flex items-center gap-3 rounded-lg px-3 py-2.5">
+          <div class="size-5 animate-pulse rounded bg-primary/20"></div>
+          <div class="h-3 w-28 animate-pulse rounded bg-primary/20"></div>
+        </div>
+      }
+    } @else {
+      @for (item of menuItems; track item.label) {
+        <a
+          class="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors"
+          [class.bg-primary]="item.active"
+          [class.text-white]="item.active"
+          [class.font-medium]="item.active"
+          [class.text-[#3c1e08]]="!item.active"
+          [class.hover:bg-primary/10]="!item.active"
+          [class.hover:text-primary]="!item.active"
+          href="#"
+        >
+          <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    }
+  </nav>
+
+  <div class="border-t border-primary/10 p-4">
+    <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 transition-colors hover:bg-primary/10" href="#">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+      <span>Settings</span>
+    </a>
+    <div class="mt-4 rounded-xl border border-primary/10 bg-[#fef2ed] p-4">
+      <p class="mb-1 text-xs font-semibold uppercase text-primary">Bakery Status</p>
+      <div class="flex items-center gap-2">
+        <span class="size-2 animate-pulse rounded-full bg-green-500"></span>
+        <span class="text-sm font-medium">Oven Active</span>
+      </div>
+    </div>
+  </div>
+</aside>

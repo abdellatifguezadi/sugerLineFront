@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-[#fdfaf7] text-[#3c1e08]">
+  <div class="flex min-h-screen">
+    <aside class="hidden w-64 flex-col border-r border-primary/10 bg-[#fdfaf7] md:flex">
+      <div class="flex items-center gap-3 p-6">
+        <div class="rounded-lg bg-primary p-2 text-white">
+          <span class="material-symbols-outlined">bakery_dining</span>
+        </div>
+        <div>
+          <h2 class="leading-none text-xl font-black text-primary">SugarLine</h2>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Admin Console</p>
+        </div>
+      </div>
+
+      <nav class="flex-1 space-y-1 px-4 py-4">
+        <a class="flex items-center gap-3 rounded-lg bg-primary px-3 py-2.5 font-medium text-white" href="#">
+          <span class="material-symbols-outlined text-[20px]">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary" href="#">
+          <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+          <span>Orders</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary" href="#">
+          <span class="material-symbols-outlined text-[20px]">cake</span>
+          <span>Products</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary" href="#">
+          <span class="material-symbols-outlined text-[20px]">group</span>
+          <span>Customers</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary" href="#">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span>Analytics</span>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary" href="#">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+          <span>Inventory</span>
+        </a>
+      </nav>
+
+      <div class="border-t border-primary/10 p-4">
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 transition-colors hover:bg-primary/10" href="#">
+          <span class="material-symbols-outlined text-[20px]">settings</span>
+          <span>Settings</span>
+        </a>
+        <div class="mt-4 rounded-xl border border-primary/10 bg-[#fef2ed] p-4">
+          <p class="mb-1 text-xs font-semibold uppercase text-primary">Bakery Status</p>
+          <div class="flex items-center gap-2">
+            <span class="size-2 animate-pulse rounded-full bg-green-500"></span>
+            <span class="text-sm font-medium">Oven Active</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex flex-1 flex-col">
+      <header class="sticky top-0 z-40 border-b border-primary/10 bg-white/90 px-4 py-3 backdrop-blur md:px-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary md:hidden">menu</span>
+            <h1 class="text-lg font-extrabold text-[#3c1e08] md:text-xl">Admin Dashboard</h1>
+          </div>
+          <a routerLink="/login" class="rounded-lg border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10">Logout</a>
+        </div>
+      </header>
+
+      <main class="flex-1 p-4 md:p-6">
+        <div class="flex h-full min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-primary/20 bg-white text-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-widest text-primary/70">Admin Area</p>
+            <h2 class="mt-2 text-2xl font-black text-[#3c1e08]">Dashboard Content Coming Soon</h2>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

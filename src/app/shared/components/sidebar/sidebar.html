@@ -25,19 +25,31 @@
       }
     } @else {
       @for (item of menuItems; track item.label) {
-        <a
-          class="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors"
-          [class.bg-primary]="item.active"
-          [class.text-white]="item.active"
-          [class.font-medium]="item.active"
-          [class.text-[#3c1e08]]="!item.active"
-          [class.hover:bg-primary/10]="!item.active"
-          [class.hover:text-primary]="!item.active"
-          href="#"
-        >
-          <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
-          <span>{{ item.label }}</span>
-        </a>
+        @if (item.route) {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="bg-primary text-white font-medium"
+            [routerLinkActiveOptions]="{exact: false}"
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary"
+          >
+            <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </a>
+        } @else {
+          <a
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors"
+            [class.bg-primary]="item.active"
+            [class.text-white]="item.active"
+            [class.font-medium]="item.active"
+            [class.text-[#3c1e08]]="!item.active"
+            [class.hover:bg-primary/10]="!item.active"
+            [class.hover:text-primary]="!item.active"
+            href="#"
+          >
+            <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </a>
+        }
       }
     }
   </nav>

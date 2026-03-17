@@ -9,6 +9,8 @@ import { authReducer } from './features/auth/store/auth.reducer';
 import { AuthEffects } from './features/auth/store/auth.effects';
 import { statisticsReducer } from './features/admin/store/statistics.reducer';
 import { StatisticsEffects } from './features/admin/store/statistics.effects';
+import { ingredientReducer } from './features/admin/store/ingredient.reducer';
+import { IngredientEffects } from './features/admin/store/ingredient.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideStore({ auth: authReducer, statistics: statisticsReducer }),
-    provideEffects([AuthEffects, StatisticsEffects])
+    provideStore({ auth: authReducer, statistics: statisticsReducer, ingredient: ingredientReducer }),
+    provideEffects([AuthEffects, StatisticsEffects, IngredientEffects])
   ]
 };

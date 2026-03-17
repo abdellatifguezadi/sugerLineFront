@@ -1,0 +1,62 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+  <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+    <h2 class="text-xl font-bold text-[#3c1e08]">
+      {{ isEditMode ? 'Modifier l\'ingrédient' : 'Nouvel ingrédient' }}
+    </h2>
+    
+    <form [formGroup]="ingredientForm" (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+      
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Nom</label>
+        <input type="text" formControlName="nom"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="Ex: Farine">
+        @if (ingredientForm.get('nom')?.invalid && ingredientForm.get('nom')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Le nom est obligatoire (2-100 caractères)</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Type</label>
+        <input type="text" formControlName="type"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="Ex: CEREALE">
+        @if (ingredientForm.get('type')?.invalid && ingredientForm.get('type')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Le type est obligatoire</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Unité</label>
+        <input type="text" formControlName="unite"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="Ex: g, kg, L">
+        @if (ingredientForm.get('unite')?.invalid && ingredientForm.get('unite')?.touched) {
+          <p class="mt-1 text-xs text-red-600">L'unité est obligatoire</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Prix Unitaire (MAD)</label>
+        <input type="number" formControlName="prixUnitaire" step="0.0001"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="0.0085">
+        @if (ingredientForm.get('prixUnitaire')?.invalid && ingredientForm.get('prixUnitaire')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Le prix doit être positif</p>
+        }
+      </div>
+
+      <div class="flex gap-3 pt-4">
+        <button type="button" (click)="onCancel()"
+          class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+          Annuler
+        </button>
+        <button type="submit" [disabled]="ingredientForm.invalid"
+          class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">
+          {{ isEditMode ? 'Modifier' : 'Créer' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

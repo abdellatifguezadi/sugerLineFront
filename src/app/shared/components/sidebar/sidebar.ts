@@ -29,7 +29,6 @@ export class SidebarComponent {
         { label: 'Charges Mensuel', icon: 'payments' },
         { label: 'Rapport Mensuel', icon: 'description' },
         { label: 'Gestion de Users', icon: 'manage_accounts' },
-        { label: 'Statistique Admin', icon: 'analytics' },
         { label: 'All Product', icon: 'cake' },
         { label: 'Ingredient', icon: 'inventory_2' },
         { label: 'All Commande', icon: 'shopping_bag' },

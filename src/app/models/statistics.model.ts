@@ -21,17 +21,11 @@ export interface AdminStatistics {
   revenuMoisPrecedent: number;
   beneficeNet: number;
   chargesTotal: number;
-  tauxCroissanceRevenu: number;
-  tauxCroissanceCommandes: number;
-  tauxConversionPaiement: number;
-  revenusParMois: StatDataPoint[];
-  commandesParMois: StatDataPoint[];
   commandesParStatut: StatDataPoint[];
   paiementsParStatut: StatDataPoint[];
-  topProduits: StatDataPoint[];
-  beneficesParMois: StatDataPoint[];
-  chargesParMois: StatDataPoint[];
   utilisateursParRole: StatDataPoint[];
+  tauxCroissanceRevenu: number;
+  tauxConversionPaiement: number;
 }
 
 export interface StatisticsState {

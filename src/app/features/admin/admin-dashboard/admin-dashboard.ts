@@ -7,7 +7,6 @@ import * as StatisticsActions from '../store/statistics.actions';
 import { SidebarComponent } from '../../../shared/components/sidebar/sidebar';
 import { selectIsLoading, selectRole } from '../../auth/store/auth.selectors';
 import { selectStatisticsData, selectStatisticsLoading } from '../store/statistics.selectors';
-import { RevenueChartComponent } from '../components/revenue-chart/revenue-chart';
 import { StatusChartComponent } from '../components/status-chart/status-chart';
 
 @Component({
@@ -16,7 +15,6 @@ import { StatusChartComponent } from '../components/status-chart/status-chart';
   imports: [
     CommonModule,
     SidebarComponent,
-    RevenueChartComponent,
     StatusChartComponent
   ],
   templateUrl: './admin-dashboard.html',

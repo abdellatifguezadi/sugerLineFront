@@ -2,12 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import * as AuthActions from '../../auth/store/auth.actions';
-import * as StatisticsActions from '../store/statistics.actions';
-import { SidebarComponent } from '../../../shared/components/sidebar/sidebar';
-import { selectIsLoading, selectRole } from '../../auth/store/auth.selectors';
-import { selectStatisticsData, selectStatisticsLoading } from '../store/statistics.selectors';
-import { StatusChartComponent } from '../components/status-chart/status-chart';
+import * as AuthActions from '../../../auth/store/auth.actions';
+import * as StatisticsActions from '../../store/statistics.actions';
+import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
+import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
+import { selectStatisticsData, selectStatisticsLoading } from '../../store/statistics.selectors';
+import { StatusChartComponent } from '../../components/status-chart/status-chart';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,6 +16,7 @@ import { StatusChartComponent } from '../components/status-chart/status-chart';
   imports: [
     CommonModule,
     SidebarComponent,
+    NavbarComponent,
     StatusChartComponent
   ],
   templateUrl: './admin-dashboard.html',
@@ -31,11 +33,6 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(StatisticsActions.loadStatistics());
-  }
-
-  logout(): void {
-    this.store.dispatch(AuthActions.logout());
-    this.router.navigate(['/login']);
   }
 
   formatCurrency(value: number): string {

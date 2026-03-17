@@ -1,16 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 type SidebarItem = {
   label: string;
   icon: string;
+  route?: string;
   active?: boolean;
 };
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
@@ -25,12 +27,12 @@ export class SidebarComponent {
   get menuItems(): SidebarItem[] {
     if (this.isAdmin) {
       return [
-        { label: 'Dashboard', icon: 'dashboard', active: true },
+        { label: 'Dashboard', icon: 'dashboard', route: '/admin' },
         { label: 'Charges Mensuel', icon: 'payments' },
         { label: 'Rapport Mensuel', icon: 'description' },
         { label: 'Gestion de Users', icon: 'manage_accounts' },
         { label: 'All Product', icon: 'cake' },
-        { label: 'Ingredient', icon: 'inventory_2' },
+        { label: 'Ingredient', icon: 'inventory_2', route: '/ingredients' },
         { label: 'All Commande', icon: 'shopping_bag' },
         { label: 'All Payments', icon: 'receipt_long' },
       ];

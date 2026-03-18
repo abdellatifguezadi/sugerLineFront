@@ -42,7 +42,7 @@ export class SidebarComponent {
       { label: 'Dashboard', icon: 'dashboard', active: true },
       { label: 'My Payment', icon: 'payments' },
       { label: 'My Commande', icon: 'shopping_bag' },
-      { label: 'All Product', icon: 'cake' },
+      { label: 'All Product', icon: 'cake', route: '/products' },
       { label: 'My Statistique', icon: 'analytics' },
     ];
   }

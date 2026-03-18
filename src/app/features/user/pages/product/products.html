@@ -21,6 +21,7 @@
         <div class="mb-6 flex items-center justify-between">
           <p class="text-sm text-slate-600">{{ totalElements }} produit(s) trouvé(s)</p>
           <button
+            (click)="openCreateModal()"
             class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90">
             + Nouveau Produit
           </button>
@@ -42,36 +43,22 @@
           emptyMessage="Aucun produit trouvé. Essayez de modifier les filtres.">
         </app-table>
 
-        <!-- Pagination -->
-        @if (totalPages > 1) {
-          <div class="mt-6 flex items-center justify-between rounded-2xl border border-primary/10 bg-white p-4 shadow-sm">
-            <button (click)="previousPage()" [disabled]="currentPage === 0"
-              class="rounded-lg border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-50">
-              Précédent
-            </button>
-            
-            <div class="flex items-center gap-2">
-              @for (page of [].constructor(totalPages); track $index) {
-                <button (click)="goToPage($index)"
-                  [class.bg-primary]="currentPage === $index"
-                  [class.text-white]="currentPage === $index"
-                  [class.border-primary]="currentPage === $index"
-                  [class.text-primary]="currentPage !== $index"
-                  [class.border-primary/20]="currentPage !== $index"
-                  class="rounded-lg border px-3 py-1 text-sm font-semibold transition-colors hover:bg-primary/10">
-                  {{ $index + 1 }}
-                </button>
-              }
-            </div>
-
-            <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1"
-              class="rounded-lg border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-50">
-              Suivant
-            </button>
-          </div>
-        }
+        <app-pagination
+          [currentPage]="currentPage"
+          [totalPages]="totalPages"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
 
       </main>
     </div>
   </div>
 </div>
+
+@if (showModal) {
+  <app-product-form
+    [product]="selectedProduct"
+    [isEditMode]="isEditMode"
+    (submitForm)="onSubmit($event)"
+    (cancel)="closeModal()">
+  </app-product-form>
+}

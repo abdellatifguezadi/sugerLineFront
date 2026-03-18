@@ -7,13 +7,24 @@ import { TableComponent, TableColumn, TableAction } from '../../../../shared/com
 import { FilterBarComponent, FilterField } from '../../../../shared/components/filter-bar/filter-bar';
 import { ProductService, PageResponse, ProductFilters } from '../../services/product.service';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
-import { Product } from '../../../../models/product.model';
+import { Product, ProductRequest, ProductUpdate } from '../../../../models/product.model';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
+import { ProductFormComponent } from '../../components/product-form/product-form';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
+import * as IngredientActions from '../../../admin/store/ingredient.actions';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, NavbarComponent, TableComponent, FilterBarComponent],
+  imports: [
+    CommonModule,
+    SidebarComponent,
+    NavbarComponent,
+    TableComponent,
+    FilterBarComponent,
+    ProductFormComponent,
+    PaginationComponent
+  ],
   providers: [CurrencyPipe],
   templateUrl: './products.html',
   styleUrl: './products.css'
@@ -30,9 +41,12 @@ export class ProductsComponent implements OnInit {
   displayProducts: any[] = [];
   loading = false;
   error: string | null = null;
+  showModal = false;
+  isEditMode = false;
+  selectedProduct: Product | null = null;
 
   currentPage = 0;
-  pageSize = 10;
+  pageSize = 5;
   totalElements = 0;
   totalPages = 0;
 
@@ -72,19 +86,52 @@ export class ProductsComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.store.dispatch(IngredientActions.loadIngredients());
     this.loadProducts();
+  }
+
+  openCreateModal(): void {
+    this.isEditMode = false;
+    this.selectedProduct = null;
+    this.showModal = true;
+  }
+
+  openEditModal(product: Product): void {
+    // Keep original product for editing modal (prixProduction is server-calculated)
+    this.isEditMode = true;
+    this.selectedProduct = this.products.find((p) => p.id === product.id) ?? product;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.isEditMode = false;
+    this.selectedProduct = null;
   }
 
   loadProducts(): void {
     this.loading = true;
     this.error = null;
 
+    const parseOptionalNumber = (value: unknown): number | undefined => {
+      if (value === '' || value === null || value === undefined) return undefined;
+      const n = typeof value === 'number' ? value : Number(value);
+      return Number.isFinite(n) ? n : undefined;
+    };
+
+    const nom =
+      typeof this.filters.nom === 'string' && this.filters.nom.trim().length > 0
+        ? this.filters.nom.trim()
+        : undefined;
+    const minPrice = parseOptionalNumber(this.filters.minPrice);
+    const maxPrice = parseOptionalNumber(this.filters.maxPrice);
+
     const productFilters: ProductFilters = {
       page: this.currentPage,
       size: this.pageSize,
-      nom: this.filters.nom || undefined,
-      minPrice: this.filters.minPrice,
-      maxPrice: this.filters.maxPrice
+      nom,
+      minPrice,
+      maxPrice
     };
 
     this.productService.getAllProducts(productFilters).subscribe({
@@ -141,14 +188,66 @@ export class ProductsComponent implements OnInit {
     this.loadProducts();
   }
 
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadProducts();
+  }
+
   viewProduct(product: Product): void {
     console.log('Voir produit:', product);
     // TODO: Implémenter la vue détails
   }
 
   editProduct(product: Product): void {
-    console.log('Modifier produit:', product);
-    // TODO: Implémenter l'édition
+    this.openEditModal(product);
+  }
+
+  private normalizeIngredientProduits(
+    rows: { ingredientId: number; quantite: number }[]
+  ): { ingredientId: number; quantite: number }[] {
+    const map = new Map<number, number>();
+    for (const r of rows ?? []) {
+      const id = Number(r.ingredientId);
+      const q = Number(r.quantite);
+      if (!id || !Number.isFinite(id) || !Number.isFinite(q) || q <= 0) continue;
+      map.set(id, (map.get(id) ?? 0) + q);
+    }
+    return [...map.entries()].map(([ingredientId, quantite]) => ({ ingredientId, quantite }));
+  }
+
+  onSubmit(formData: { nom: string; prixVente: number; ingredientProduits: any[] }): void {
+    const payloadBase = {
+      nom: formData.nom,
+      prixVente: Number(formData.prixVente),
+      ingredientProduits: this.normalizeIngredientProduits(formData.ingredientProduits)
+    };
+
+    if (this.isEditMode && this.selectedProduct) {
+      const update: ProductUpdate = payloadBase as ProductUpdate;
+      this.productService.updateProduct(this.selectedProduct.id, update).subscribe({
+        next: () => {
+          this.closeModal();
+          this.loadProducts();
+        },
+        error: (err) => {
+          this.error = 'Erreur lors de la modification du produit';
+          console.error(err);
+        }
+      });
+      return;
+    }
+
+    const create: ProductRequest = payloadBase as ProductRequest;
+    this.productService.createProduct(create).subscribe({
+      next: () => {
+        this.closeModal();
+        this.loadProducts();
+      },
+      error: (err) => {
+        this.error = 'Erreur lors de la création du produit';
+        console.error(err);
+      }
+    });
   }
 
   deleteProduct(id: number): void {

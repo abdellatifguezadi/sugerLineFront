@@ -1,13 +1,12 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { InputComponent } from '../../../../shared/components/input/input';
 import { LoginRequest } from '../../../../models/auth.model';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-form.html',
   styleUrls: ['./login-form.css']
 })

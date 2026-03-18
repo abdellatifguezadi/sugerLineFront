@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface TableColumn {
@@ -29,14 +29,4 @@ export class TableComponent {
   @Input() emptyMessage = 'Aucune donnée disponible';
   
   @Output() rowClick = new EventEmitter<any>();
-  
-  @ContentChild('customCell', { read: TemplateRef }) customCellTemplate?: TemplateRef<any>;
-
-  onRowClick(item: any): void {
-    this.rowClick.emit(item);
-  }
-
-  getCellValue(item: any, key: string): any {
-    return key.split('.').reduce((obj, k) => obj?.[k], item);
-  }
 }

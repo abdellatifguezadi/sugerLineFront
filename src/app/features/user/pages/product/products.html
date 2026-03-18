@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-[#fdfaf7] text-[#3c1e08]">
+  <div class="flex min-h-screen">
+    <app-sidebar [role]="connectedRole$ | async" [isLoading]="(authLoading$ | async) ?? true"></app-sidebar>
+
+    <div class="flex flex-1 flex-col overflow-hidden">
+
+      <app-navbar title="Gestion des Produits"></app-navbar>
+
+      <main class="flex-1 overflow-y-auto p-4 md:p-6">
+
+        <div class="mb-6">
+          <app-filter-bar
+            [fields]="filterFields"
+            [(filters)]="filters"
+            (apply)="applyFilters()"
+            (clear)="clearFilters()">
+          </app-filter-bar>
+
+        </div>
+
+        <div class="mb-6 flex items-center justify-between">
+          <p class="text-sm text-slate-600">{{ totalElements }} produit(s) trouvé(s)</p>
+          <button
+            class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90">
+            + Nouveau Produit
+          </button>
+        </div>
+
+        <!-- Messages d'erreur -->
+        @if (error) {
+          <div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4">
+            <p class="text-sm font-medium text-red-800">{{ error }}</p>
+          </div>
+        }
+
+        <!-- Table des produits -->
+        <app-table
+          [columns]="tableColumns"
+          [data]="displayProducts"
+          [actions]="tableActions"
+          [loading]="loading"
+          emptyMessage="Aucun produit trouvé. Essayez de modifier les filtres.">
+        </app-table>
+
+        <!-- Pagination -->
+        @if (totalPages > 1) {
+          <div class="mt-6 flex items-center justify-between rounded-2xl border border-primary/10 bg-white p-4 shadow-sm">
+            <button (click)="previousPage()" [disabled]="currentPage === 0"
+              class="rounded-lg border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-50">
+              Précédent
+            </button>
+            
+            <div class="flex items-center gap-2">
+              @for (page of [].constructor(totalPages); track $index) {
+                <button (click)="goToPage($index)"
+                  [class.bg-primary]="currentPage === $index"
+                  [class.text-white]="currentPage === $index"
+                  [class.border-primary]="currentPage === $index"
+                  [class.text-primary]="currentPage !== $index"
+                  [class.border-primary/20]="currentPage !== $index"
+                  class="rounded-lg border px-3 py-1 text-sm font-semibold transition-colors hover:bg-primary/10">
+                  {{ $index + 1 }}
+                </button>
+              }
+            </div>
+
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1"
+              class="rounded-lg border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-50">
+              Suivant
+            </button>
+          </div>
+        }
+
+      </main>
+    </div>
+  </div>
+</div>

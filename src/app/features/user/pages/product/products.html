@@ -62,3 +62,10 @@
     (cancel)="closeModal()">
   </app-product-form>
 }
+
+@if (showViewModal) {
+  <app-product-view
+    [product]="selectedViewProduct"
+    (close)="closeViewModal()">
+  </app-product-view>
+}

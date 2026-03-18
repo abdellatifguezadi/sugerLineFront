@@ -10,6 +10,7 @@ import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 import { Product, ProductRequest, ProductUpdate } from '../../../../models/product.model';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { ProductFormComponent } from '../../components/product-form/product-form';
+import { ProductViewComponent } from '../../components/product-view/product-view';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import * as IngredientActions from '../../../admin/store/ingredient.actions';
 
@@ -23,6 +24,7 @@ import * as IngredientActions from '../../../admin/store/ingredient.actions';
     TableComponent,
     FilterBarComponent,
     ProductFormComponent,
+    ProductViewComponent,
     PaginationComponent
   ],
   providers: [CurrencyPipe],
@@ -44,6 +46,8 @@ export class ProductsComponent implements OnInit {
   showModal = false;
   isEditMode = false;
   selectedProduct: Product | null = null;
+  showViewModal = false;
+  selectedViewProduct: Product | null = null;
 
   currentPage = 0;
   pageSize = 5;
@@ -107,6 +111,11 @@ export class ProductsComponent implements OnInit {
     this.showModal = false;
     this.isEditMode = false;
     this.selectedProduct = null;
+  }
+
+  closeViewModal(): void {
+    this.showViewModal = false;
+    this.selectedViewProduct = null;
   }
 
   loadProducts(): void {
@@ -194,8 +203,8 @@ export class ProductsComponent implements OnInit {
   }
 
   viewProduct(product: Product): void {
-    console.log('Voir produit:', product);
-    // TODO: Implémenter la vue détails
+    this.selectedViewProduct = this.products.find((p) => p.id === product.id) ?? product;
+    this.showViewModal = true;
   }
 
   editProduct(product: Product): void {

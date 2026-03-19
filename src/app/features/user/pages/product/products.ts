@@ -72,7 +72,7 @@ export class ProductsComponent implements OnInit {
     { key: 'ingredientsCount', label: 'Ingrédients', width: '15%' }
   ];
 
-  tableActions: TableAction[] = [
+  private readonly allTableActions: TableAction[] = [
     {
       label: 'Voir',
       icon: 'visibility',
@@ -90,6 +90,19 @@ export class ProductsComponent implements OnInit {
       icon: 'delete',
       class: 'rounded-lg border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50',
       callback: (item: Product) => this.openDeleteConfirm(item.id)
+    }
+  ];
+
+  getTableActions(role: string | null): TableAction[] {
+    return (role ?? '').trim() === 'Administrateur' ? this.allTableActions : this.viewOnlyTableActions;
+  }
+
+  private readonly viewOnlyTableActions: TableAction[] = [
+    {
+      label: 'Voir',
+      icon: 'visibility',
+      class: 'rounded-lg border border-blue-200 p-2 text-blue-600 transition-colors hover:bg-blue-50',
+      callback: (item: Product) => this.viewProduct(item)
     }
   ];
 

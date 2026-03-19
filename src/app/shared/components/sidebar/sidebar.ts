@@ -21,7 +21,7 @@ export class SidebarComponent {
   @Input() isLoading = true;
 
   get isAdmin(): boolean {
-    return (this.role ?? '').trim().toLowerCase().includes('admin');
+    return (this.role ?? '').trim() === 'Administrateur';
   }
 
   get menuItems(): SidebarItem[] {

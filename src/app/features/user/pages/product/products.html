@@ -20,11 +20,13 @@
 
         <div class="mb-6 flex items-center justify-between">
           <p class="text-sm text-slate-600">{{ totalElements }} produit(s) trouvé(s)</p>
-          <button
-            (click)="openCreateModal()"
-            class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90">
-            + Nouveau Produit
-          </button>
+          @if ((connectedRole$ | async) === 'Administrateur') {
+            <button
+              (click)="openCreateModal()"
+              class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90">
+              + Nouveau Produit
+            </button>
+          }
         </div>
 
         <!-- Messages d'erreur -->
@@ -38,7 +40,7 @@
         <app-table
           [columns]="tableColumns"
           [data]="displayProducts"
-          [actions]="tableActions"
+          [actions]="getTableActions(connectedRole$ | async)"
           [loading]="loading"
           emptyMessage="Aucun produit trouvé. Essayez de modifier les filtres.">
         </app-table>

@@ -8,6 +8,7 @@ import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors'
 import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { TableComponent, TableColumn, TableAction } from '../../../../shared/components/table/table';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { IngredientFormComponent } from '../../components/ingredient-form/ingredient-form';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 import { Ingredient } from '../../../../models/ingredient.model';
@@ -16,7 +17,7 @@ import { map } from 'rxjs';
 @Component({
   selector: 'app-ingredients',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, NavbarComponent, TableComponent, IngredientFormComponent],
+  imports: [CommonModule, SidebarComponent, NavbarComponent, TableComponent, ConfirmDialogComponent, IngredientFormComponent],
   providers: [CurrencyPipe],
   templateUrl: './ingredients.html',
   styleUrl: './ingredients.css'
@@ -45,6 +46,8 @@ export class IngredientsComponent implements OnInit {
   showModal = false;
   isEditMode = false;
   selectedIngredient: Ingredient | null = null;
+  showDeleteConfirm = false;
+  ingredientToDeleteId: number | null = null;
 
   tableColumns: TableColumn[] = [
     { key: 'type', label: 'Type', width: '20%' },
@@ -64,7 +67,7 @@ export class IngredientsComponent implements OnInit {
       label: 'Supprimer',
       icon: 'delete',
       class: 'rounded-lg border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50',
-      callback: (item: Ingredient) => this.deleteIngredient(item.id)
+      callback: (item: Ingredient) => this.openDeleteConfirm(item.id)
     }
   ];
 
@@ -109,9 +112,20 @@ export class IngredientsComponent implements OnInit {
     this.closeModal();
   }
 
-  deleteIngredient(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet ingrédient ?')) {
-      this.store.dispatch(IngredientActions.deleteIngredient({ id }));
-    }
+  openDeleteConfirm(id: number): void {
+    this.ingredientToDeleteId = id;
+    this.showDeleteConfirm = true;
+  }
+
+  closeDeleteConfirm(): void {
+    this.showDeleteConfirm = false;
+    this.ingredientToDeleteId = null;
+  }
+
+  confirmDelete(): void {
+    const id = this.ingredientToDeleteId;
+    if (id == null) return;
+    this.closeDeleteConfirm();
+    this.store.dispatch(IngredientActions.deleteIngredient({ id }));
   }
 }

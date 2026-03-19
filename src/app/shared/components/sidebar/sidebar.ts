@@ -21,7 +21,7 @@ export class SidebarComponent {
   @Input() isLoading = true;
 
   get isAdmin(): boolean {
-    return (this.role ?? '').trim().toLowerCase().includes('admin');
+    return (this.role ?? '').trim() === 'Administrateur';
   }
 
   get menuItems(): SidebarItem[] {
@@ -31,7 +31,7 @@ export class SidebarComponent {
         { label: 'Charges Mensuel', icon: 'payments' },
         { label: 'Rapport Mensuel', icon: 'description' },
         { label: 'Gestion de Users', icon: 'manage_accounts' },
-        { label: 'All Product', icon: 'cake' },
+        { label: 'All Product', icon: 'cake', route: '/products' },
         { label: 'Ingredient', icon: 'inventory_2', route: '/ingredients' },
         { label: 'All Commande', icon: 'shopping_bag' },
         { label: 'All Payments', icon: 'receipt_long' },
@@ -42,7 +42,7 @@ export class SidebarComponent {
       { label: 'Dashboard', icon: 'dashboard', active: true },
       { label: 'My Payment', icon: 'payments' },
       { label: 'My Commande', icon: 'shopping_bag' },
-      { label: 'All Product', icon: 'cake' },
+      { label: 'All Product', icon: 'cake', route: '/products' },
       { label: 'My Statistique', icon: 'analytics' },
     ];
   }

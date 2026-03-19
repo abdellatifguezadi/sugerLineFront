@@ -37,14 +37,14 @@
         </thead>
         <tbody class="divide-y divide-primary/5">
           @for (item of data; track item.id || $index) {
-            <tr 
-              class="transition-colors hover:bg-primary/5"
-              [class.cursor-pointer]="rowClick.observed"
-              (click)="onRowClick(item)"
-            >
+            <tr class="transition-colors hover:bg-primary/5">
               @for (column of columns; track column.key) {
-                <td class="px-6 py-4 text-sm text-[#3c1e08]">
-                  {{ getCellValue(item, column.key) }}
+                <td 
+                  class="px-6 py-4 text-sm text-[#3c1e08]"
+                  [class.cursor-pointer]="rowClick.observed"
+                  (click)="rowClick.emit(item)"
+                >
+                  {{ item[column.key] }}
                 </td>
               }
               @if (actions.length > 0) {

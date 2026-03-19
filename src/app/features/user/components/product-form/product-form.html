@@ -1,0 +1,101 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+  <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl">
+    <h2 class="text-xl font-bold text-[#3c1e08]">
+      {{ isEditMode ? 'Modifier le produit' : 'Nouveau produit' }}
+    </h2>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700">Nom</label>
+          <input
+            type="text"
+            formControlName="nom"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            placeholder="Ex: Gâteau au chocolat" />
+          @if (productForm.get('nom')?.invalid && productForm.get('nom')?.touched) {
+            <p class="mt-1 text-xs text-red-600">Le nom est obligatoire (2-100 caractères)</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700">Prix Vente</label>
+          <input
+            type="number"
+            formControlName="prixVente"
+            step="0.0001"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            placeholder="25.00" />
+          @if (productForm.get('prixVente')?.invalid && productForm.get('prixVente')?.touched) {
+            <p class="mt-1 text-xs text-red-600">Le prix doit être positif</p>
+          }
+        </div>
+      </div>
+
+      <div class="rounded-xl border border-slate-200 p-4">
+        <div class="mb-3 flex items-center justify-between">
+          <p class="text-sm font-semibold text-slate-700">Ingrédients</p>
+          <button
+            type="button"
+            (click)="addIngredientRow()"
+            class="rounded-lg border border-primary/20 px-3 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary/10">
+            + Ajouter
+          </button>
+        </div>
+
+        <div formArrayName="ingredientProduits" class="space-y-3">
+          @for (row of ingredientProduits.controls; track row; let i = $index) {
+            <div [formGroupName]="i" class="grid grid-cols-1 gap-3 md:grid-cols-12">
+              <div class="md:col-span-7">
+                <label class="block text-xs font-semibold text-slate-600">Ingrédient</label>
+                <select
+                  formControlName="ingredientId"
+                  class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                  <option [ngValue]="null" disabled>Sélectionner…</option>
+                  @for (ing of ingredients; track ing.id) {
+                    <option [ngValue]="ing.id">{{ ing.nom }} ({{ ing.unite }})</option>
+                  }
+                </select>
+              </div>
+
+              <div class="md:col-span-3">
+                <label class="block text-xs font-semibold text-slate-600">Quantité</label>
+                <input
+                  type="number"
+                  formControlName="quantite"
+                  step="0.0001"
+                  class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  placeholder="0" />
+              </div>
+
+              <div class="flex items-end md:col-span-2">
+                <button
+                  type="button"
+                  (click)="removeIngredientRow(i)"
+                  class="w-full rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+          Annuler
+        </button>
+        <button
+          type="submit"
+          [disabled]="productForm.invalid"
+          class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">
+          {{ isEditMode ? 'Modifier' : 'Créer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

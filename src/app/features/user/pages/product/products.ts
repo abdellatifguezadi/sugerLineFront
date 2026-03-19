@@ -12,6 +12,7 @@ import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors'
 import { ProductFormComponent } from '../../components/product-form/product-form';
 import { ProductViewComponent } from '../../components/product-view/product-view';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import * as IngredientActions from '../../../admin/store/ingredient.actions';
 
 @Component({
@@ -25,7 +26,8 @@ import * as IngredientActions from '../../../admin/store/ingredient.actions';
     FilterBarComponent,
     ProductFormComponent,
     ProductViewComponent,
-    PaginationComponent
+    PaginationComponent,
+    ConfirmDialogComponent
   ],
   providers: [CurrencyPipe],
   templateUrl: './products.html',
@@ -48,6 +50,8 @@ export class ProductsComponent implements OnInit {
   selectedProduct: Product | null = null;
   showViewModal = false;
   selectedViewProduct: Product | null = null;
+  showDeleteConfirm = false;
+  productToDeleteId: number | null = null;
 
   currentPage = 0;
   pageSize = 5;
@@ -85,7 +89,7 @@ export class ProductsComponent implements OnInit {
       label: 'Supprimer',
       icon: 'delete',
       class: 'rounded-lg border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50',
-      callback: (item: Product) => this.deleteProduct(item.id)
+      callback: (item: Product) => this.openDeleteConfirm(item.id)
     }
   ];
 
@@ -259,17 +263,28 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  deleteProduct(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: () => {
-          this.loadProducts();
-        },
-        error: (err) => {
-          this.error = 'Erreur lors de la suppression';
-          console.error(err);
-        }
-      });
-    }
+  openDeleteConfirm(id: number): void {
+    this.productToDeleteId = id;
+    this.showDeleteConfirm = true;
+  }
+
+  closeDeleteConfirm(): void {
+    this.showDeleteConfirm = false;
+    this.productToDeleteId = null;
+  }
+
+  confirmDelete(): void {
+    const id = this.productToDeleteId;
+    if (id == null) return;
+    this.closeDeleteConfirm();
+    this.productService.deleteProduct(id).subscribe({
+      next: () => {
+        this.loadProducts();
+      },
+      error: (err) => {
+        this.error = 'Erreur lors de la suppression';
+        console.error(err);
+      }
+    });
   }
 }

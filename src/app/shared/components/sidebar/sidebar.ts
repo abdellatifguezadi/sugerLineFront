@@ -21,7 +21,7 @@ export class SidebarComponent {
   @Input() isLoading = true;
 
   get isAdmin(): boolean {
-    return (this.role ?? '').trim() === 'Administrateur';
+    return (this.role ?? '').trim().toLowerCase().includes('admin');
   }
 
   get menuItems(): SidebarItem[] {
@@ -33,7 +33,7 @@ export class SidebarComponent {
         { label: 'Gestion de Users', icon: 'manage_accounts' },
         { label: 'All Product', icon: 'cake', route: '/products' },
         { label: 'Ingredient', icon: 'inventory_2', route: '/ingredients' },
-        { label: 'All Commande', icon: 'shopping_bag' },
+        { label: 'All Commande', icon: 'shopping_bag', route: '/commandes' },
         { label: 'All Payments', icon: 'receipt_long' },
       ];
     }

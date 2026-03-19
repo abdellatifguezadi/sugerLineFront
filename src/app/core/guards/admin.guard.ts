@@ -1,9 +1,13 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, take } from 'rxjs/operators';
+import { filter, map, take, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { selectIsAuthenticated, selectRole } from '../../features/auth/store/auth.selectors';
+import {
+  selectIsAuthenticated,
+  selectIsLoading,
+  selectRole
+} from '../../features/auth/store/auth.selectors';
 
 export const adminGuard: CanActivateFn = () => {
   const router = inject(Router);
@@ -11,14 +15,14 @@ export const adminGuard: CanActivateFn = () => {
 
   return combineLatest([
     store.select(selectIsAuthenticated),
-    store.select(selectRole)
+    store.select(selectRole),
   ]).pipe(
     take(1),
     map(([isAuthenticated, role]) => {
       if (!isAuthenticated) {
         return router.createUrlTree(['/login']);
       }
-      const isAdmin = (role ?? '').trim() === 'Administrateur';
+      const isAdmin = (role ?? '').trim().toLowerCase() === 'administrateur';
       if (!isAdmin) {
         return router.createUrlTree(['/']);
       }

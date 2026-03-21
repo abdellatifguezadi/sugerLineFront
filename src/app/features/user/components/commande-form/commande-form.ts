@@ -3,12 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommandeResponse } from '../../../../models/commande.model';
 import { ProductService } from '../../services/product.service';
+import { CommandeService } from '../../services/commande.service';
 import { Product } from '../../../../models/product.model';
-
-type CommandeFormValue = {
-  date: string;
-  commandeLines: { produitId: number; quantite: number }[];
-};
+import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
   selector: 'app-commande-form',
@@ -20,11 +17,16 @@ type CommandeFormValue = {
 export class CommandeFormComponent implements OnInit {
   @Input() commande: CommandeResponse | null = null;
   @Input() isEditMode = false;
-  @Output() submitForm = new EventEmitter<CommandeFormValue>();
+  @Output() saved = new EventEmitter<void>();
+  @Output() error = new EventEmitter<string>();
   @Output() cancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
   private productService = inject(ProductService);
+  private commandeService = inject(CommandeService);
+
+  submitting = false;
+  formError: string | null = null;
 
   products: Product[] = [];
   loadingProducts = true;
@@ -93,13 +95,31 @@ export class CommandeFormComponent implements OnInit {
       return;
     }
     const raw = this.commandeForm.value;
-    const lines = (raw.commandeLines as { produitId: number; quantite: number }[])
-      .filter(l => l?.produitId != null && l?.quantite != null && l.quantite >= 1)
-      .map(l => ({ produitId: Number(l.produitId), quantite: Number(l.quantite) }));
-    if (lines.length === 0) return;
-    this.submitForm.emit({
-      date: raw.date,
-      commandeLines: lines
+    const lines = (raw.commandeLines as { produitId: number; quantite: number }[]).map(l => ({
+      produitId: Number(l.produitId),
+      quantite: Number(l.quantite)
+    }));
+
+    const payload = { date: raw.date, commandeLines: lines };
+    this.submitting = true;
+    this.formError = null;
+
+    const obs = this.isEditMode && this.commande
+      ? this.commandeService.updateCommande(this.commande.id, payload)
+      : this.commandeService.createCommande(payload);
+
+    obs.subscribe({
+      next: () => {
+        this.submitting = false;
+        this.saved.emit();
+      },
+      error: err => {
+        this.submitting = false;
+        const msg = getHttpErrorMessage(err);
+        this.formError = msg;
+        this.error.emit(msg);
+        console.error(err);
+      }
     });
   }
 

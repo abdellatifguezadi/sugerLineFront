@@ -62,7 +62,8 @@
   <app-commande-form
     [commande]="selectedCommande"
     [isEditMode]="isEditMode"
-    (submitForm)="onSubmit($event)"
+    (saved)="onFormSaved()"
+    (error)="onFormError($event)"
     (cancel)="closeFormModal()">
   </app-commande-form>
 }
@@ -77,4 +78,15 @@
     (confirm)="confirmDelete()"
     (cancel)="closeDeleteConfirm()">
   </app-confirm-dialog>
+}
+
+@if (showPaiementConfirm && commandeToPay) {
+  <app-paiement-confirm
+    [visible]="true"
+    [commandeId]="commandeToPay.id"
+    [montant]="commandeToPay.total"
+    (saved)="onPaiementSaved()"
+    (error)="onPaiementError($event)"
+    (cancelled)="closePaiementConfirm()">
+  </app-paiement-confirm>
 }

@@ -9,7 +9,7 @@ Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
   selector: 'app-status-chart',
   standalone: true,
   imports: [CommonModule],
-  template: `<canvas #canvas></canvas>`
+  templateUrl: './status-chart.html'
 })
 export class StatusChartComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() data: StatDataPoint[] = [];

@@ -62,7 +62,8 @@
   <app-commande-form
     [commande]="selectedCommande"
     [isEditMode]="isEditMode"
-    (submitForm)="onSubmit($event)"
+    (saved)="onFormSaved()"
+    (error)="onFormError($event)"
     (cancel)="closeFormModal()">
   </app-commande-form>
 }

@@ -5,6 +5,11 @@
     </h2>
 
     <form [formGroup]="commandeForm" (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+      @if (formError) {
+        <div class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {{ formError }}
+        </div>
+      }
       <div>
         <label class="block text-sm font-semibold text-slate-700">Date</label>
         <input
@@ -75,9 +80,9 @@
         </button>
         <button
           type="submit"
-          [disabled]="commandeForm.invalid || loadingProducts"
+          [disabled]="commandeForm.invalid || loadingProducts || submitting"
           class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">
-          {{ isEditMode ? 'Modifier' : 'Créer' }}
+          {{ submitting ? 'Envoi...' : (isEditMode ? 'Modifier' : 'Créer') }}
         </button>
       </div>
     </form>

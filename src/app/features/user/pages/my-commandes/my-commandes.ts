@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { CommandeDetailComponent } from '../../components/commande-detail/commande-detail';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 import { CommandeFormComponent } from '../../components/commande-form/commande-form';
+import { PaiementConfirmComponent } from '../../components/paiement-confirm/paiement-confirm';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 
 @Component({
@@ -27,7 +28,8 @@ import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
     PaginationComponent,
     ConfirmDialogComponent,
     CommandeDetailComponent,
-    CommandeFormComponent
+    CommandeFormComponent,
+    PaiementConfirmComponent
   ],
   providers: [CurrencyPipe],
   templateUrl: './my-commandes.html',
@@ -78,11 +80,19 @@ export class MyCommandesComponent implements OnInit {
   showDetailModal = false;
   showFormModal = false;
   showDeleteConfirm = false;
+  showPaiementConfirm = false;
   selectedCommande: CommandeResponse | null = null;
   commandeToDeleteId: number | null = null;
+  commandeToPay: { id: number; total: number } | null = null;
   isEditMode = false;
 
   private onlyEnAttente = (item: any) => (item?.statut ?? '') === StatutCommande.EN_ATTENTE;
+
+  private canPay = (item: any) => {
+    if ((item?.statut ?? '') !== StatutCommande.EN_ATTENTE) return false;
+    const p = item?.paiement;
+    return !p || (p.statut && String(p.statut).toUpperCase() === 'ANNULE');
+  };
 
   tableActions: TableAction[] = [
     {
@@ -97,6 +107,13 @@ export class MyCommandesComponent implements OnInit {
       class: 'rounded-lg border border-primary/20 p-2 text-primary transition-colors hover:bg-primary/10',
       callback: (item: CommandeResponse) => this.editCommande(item),
       visible: this.onlyEnAttente.bind(this)
+    },
+    {
+      label: 'Payer',
+      icon: 'payment',
+      class: 'rounded-lg border border-green-200 p-2 text-green-600 transition-colors hover:bg-green-50',
+      callback: (item: CommandeResponse) => this.openPaiementConfirm(item.id, item.total ?? 0),
+      visible: this.canPay.bind(this)
     }
   ];
 
@@ -240,33 +257,31 @@ export class MyCommandesComponent implements OnInit {
     });
   }
 
-  onSubmit(formData: { date: string; commandeLines: { produitId: number; quantite: number }[] }): void {
-    const payload = {
-      date: formData.date,
-      commandeLines: formData.commandeLines
-    } as { date: string; commandeLines: { produitId: number; quantite: number }[] };
-    if (this.isEditMode && this.selectedCommande) {
-      this.commandeService.updateCommande(this.selectedCommande.id, payload).subscribe({
-        next: () => {
-          this.closeFormModal();
-          this.loadCommandes();
-        },
-        error: err => {
-          this.error = getHttpErrorMessage(err);
-          console.error(err);
-        }
-      });
-      return;
-    }
-    this.commandeService.createCommande(payload).subscribe({
-      next: () => {
-        this.closeFormModal();
-        this.loadCommandes();
-      },
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
-    });
+  onFormSaved(): void {
+    this.closeFormModal();
+    this.loadCommandes();
+  }
+
+  onFormError(msg: string): void {
+    this.error = msg;
+  }
+
+  openPaiementConfirm(commandeId: number, total: number): void {
+    this.commandeToPay = { id: commandeId, total };
+    this.showPaiementConfirm = true;
+  }
+
+  closePaiementConfirm(): void {
+    this.showPaiementConfirm = false;
+    this.commandeToPay = null;
+  }
+
+  onPaiementSaved(): void {
+    this.closePaiementConfirm();
+    this.loadCommandes();
+  }
+
+  onPaiementError(msg: string): void {
+    this.error = msg;
   }
 }

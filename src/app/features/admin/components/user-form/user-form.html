@@ -1,0 +1,70 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+  <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+    <h2 class="text-xl font-bold text-[#3c1e08]">Nouvel utilisateur</h2>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Username</label>
+        <input type="text" formControlName="username"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="Ex: john_doe">
+        @if (userForm.get('username')?.invalid && userForm.get('username')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Username est obligatoire</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Email</label>
+        <input type="email" formControlName="email"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="Ex: john@example.com">
+        @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Email valide requis</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Mot de passe</label>
+        <input type="password" formControlName="motDePasse"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="••••••••">
+        @if (userForm.get('motDePasse')?.invalid && userForm.get('motDePasse')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Mot de passe requis (min. 4 caractères)</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Nom complet</label>
+        <input type="text" formControlName="fullName"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="Ex: John Doe">
+        @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Full name est obligatoire</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Rôle</label>
+        <select formControlName="role"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+          @for (r of roles; track r.value) {
+            <option [value]="r.value">{{ r.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="flex gap-3 pt-4">
+        <button type="button" (click)="onCancel()"
+          class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+          Annuler
+        </button>
+        <button type="submit" [disabled]="userForm.invalid || loading"
+          class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50">
+          {{ loading ? 'Création...' : 'Créer' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

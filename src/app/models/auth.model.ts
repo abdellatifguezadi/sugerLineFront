@@ -1,3 +1,13 @@
+export type Role = 'ADMINISTRATEUR' | 'CAISSIER' | 'LIVREUR' | 'MAGASIN';
+
+export interface RegisterRequest {
+  username: string;
+  email: string;
+  motDePasse: string;
+  fullName: string;
+  role: Role;
+}
+
 export interface LoginRequest {
   username: string;
   motDePasse: string;

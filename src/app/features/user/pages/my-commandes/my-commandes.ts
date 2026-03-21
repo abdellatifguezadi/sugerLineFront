@@ -240,33 +240,12 @@ export class MyCommandesComponent implements OnInit {
     });
   }
 
-  onSubmit(formData: { date: string; commandeLines: { produitId: number; quantite: number }[] }): void {
-    const payload = {
-      date: formData.date,
-      commandeLines: formData.commandeLines
-    } as { date: string; commandeLines: { produitId: number; quantite: number }[] };
-    if (this.isEditMode && this.selectedCommande) {
-      this.commandeService.updateCommande(this.selectedCommande.id, payload).subscribe({
-        next: () => {
-          this.closeFormModal();
-          this.loadCommandes();
-        },
-        error: err => {
-          this.error = getHttpErrorMessage(err);
-          console.error(err);
-        }
-      });
-      return;
-    }
-    this.commandeService.createCommande(payload).subscribe({
-      next: () => {
-        this.closeFormModal();
-        this.loadCommandes();
-      },
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
-    });
+  onFormSaved(): void {
+    this.closeFormModal();
+    this.loadCommandes();
+  }
+
+  onFormError(msg: string): void {
+    this.error = msg;
   }
 }

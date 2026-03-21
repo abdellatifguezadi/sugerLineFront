@@ -12,6 +12,7 @@ export interface TableAction {
   icon?: string;
   class?: string;
   callback: (item: any) => void;
+  visible?: (item: any) => boolean;
 }
 
 @Component({

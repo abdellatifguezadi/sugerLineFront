@@ -79,8 +79,10 @@ export class CommandesComponent implements OnInit {
   showDetailModal = false;
   showFormModal = false;
   showDeleteConfirm = false;
+  showLivrerConfirm = false;
   selectedCommande: CommandeResponse | null = null;
   commandeToDeleteId: number | null = null;
+  commandeToLivrerId: number | null = null;
   isEditMode = false;
 
   private onlyEnAttente = (item: any) => (item?.statut ?? '') === StatutCommande.EN_ATTENTE;
@@ -97,6 +99,13 @@ export class CommandesComponent implements OnInit {
       icon: 'edit',
       class: 'rounded-lg border border-primary/20 p-2 text-primary transition-colors hover:bg-primary/10',
       callback: (item: CommandeResponse) => this.editCommande(item),
+      visible: this.onlyEnAttente.bind(this)
+    },
+    {
+      label: 'Livrer',
+      icon: 'local_shipping',
+      class: 'rounded-lg border border-green-200 p-2 text-green-600 transition-colors hover:bg-green-50',
+      callback: (item: CommandeResponse) => this.openLivrerConfirm(item.id),
       visible: this.onlyEnAttente.bind(this)
     },
     {
@@ -241,6 +250,29 @@ export class CommandesComponent implements OnInit {
     if (id == null) return;
     this.closeDeleteConfirm();
     this.commandeService.annulerCommande(id).subscribe({
+      next: () => this.loadCommandes(),
+      error: err => {
+        this.error = getHttpErrorMessage(err);
+        console.error(err);
+      }
+    });
+  }
+
+  openLivrerConfirm(id: number): void {
+    this.commandeToLivrerId = id;
+    this.showLivrerConfirm = true;
+  }
+
+  closeLivrerConfirm(): void {
+    this.showLivrerConfirm = false;
+    this.commandeToLivrerId = null;
+  }
+
+  confirmLivrer(): void {
+    const id = this.commandeToLivrerId;
+    if (id == null) return;
+    this.closeLivrerConfirm();
+    this.commandeService.livrerCommande(id).subscribe({
       next: () => this.loadCommandes(),
       error: err => {
         this.error = getHttpErrorMessage(err);

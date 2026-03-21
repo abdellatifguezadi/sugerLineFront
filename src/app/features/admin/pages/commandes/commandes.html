@@ -78,3 +78,15 @@
     (cancel)="closeDeleteConfirm()">
   </app-confirm-dialog>
 }
+
+@if (showLivrerConfirm) {
+  <app-confirm-dialog
+    title="Livrer la commande"
+    message="Confirmer la livraison de cette commande ?"
+    confirmLabel="Livrer"
+    cancelLabel="Annuler"
+    variant="primary"
+    (confirm)="confirmLivrer()"
+    (cancel)="closeLivrerConfirm()">
+  </app-confirm-dialog>
+}

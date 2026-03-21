@@ -6,6 +6,8 @@ import { IngredientsComponent } from './features/admin/pages/ingredients/ingredi
 import { CommandesComponent } from './features/admin/pages/commandes/commandes';
 import { ProductsComponent } from './features/user/pages/product/products';
 import { MyCommandesComponent } from './features/user/pages/my-commandes/my-commandes';
+import { MyPaymentsComponent } from './features/user/pages/my-payments/my-payments';
+import { AllPaymentsComponent } from './features/admin/pages/all-payments/all-payments';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { userGuard } from './core/guards/user.guard';
@@ -18,6 +20,8 @@ export const routes: Routes = [
   { path: 'ingredients', component: IngredientsComponent, canActivate: [adminGuard] },
   { path: 'commandes', component: CommandesComponent, canActivate: [adminGuard] },
   { path: 'my-commandes', component: MyCommandesComponent, canActivate: [userGuard] },
+  { path: 'my-payments', component: MyPaymentsComponent, canActivate: [userGuard] },
+  { path: 'all-payments', component: AllPaymentsComponent, canActivate: [adminGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
 ];

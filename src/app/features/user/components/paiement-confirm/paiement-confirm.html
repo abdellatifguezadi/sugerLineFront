@@ -1,0 +1,11 @@
+@if (visible) {
+  <app-confirm-dialog
+    title="Confirmer le paiement"
+    [message]="message"
+    confirmLabel="Payer"
+    cancelLabel="Annuler"
+    variant="primary"
+    (confirm)="onConfirm()"
+    (cancel)="onCancel()">
+  </app-confirm-dialog>
+}

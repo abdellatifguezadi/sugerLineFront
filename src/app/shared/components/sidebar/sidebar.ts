@@ -34,13 +34,13 @@ export class SidebarComponent {
         { label: 'All Product', icon: 'cake', route: '/products' },
         { label: 'Ingredient', icon: 'inventory_2', route: '/ingredients' },
         { label: 'All Commande', icon: 'shopping_bag', route: '/commandes' },
-        { label: 'All Payments', icon: 'receipt_long' },
+        { label: 'All Payments', icon: 'receipt_long', route: '/all-payments' },
       ];
     }
 
     return [
       { label: 'Dashboard', icon: 'dashboard', active: true },
-      { label: 'My Payment', icon: 'payments' },
+      { label: 'My Payment', icon: 'payments', route: '/my-payments' },
       { label: 'My Commande', icon: 'shopping_bag', route: '/my-commandes' },
       { label: 'All Product', icon: 'cake', route: '/products' },
       { label: 'My Statistique', icon: 'analytics' },

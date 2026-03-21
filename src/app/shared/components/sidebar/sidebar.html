@@ -6,7 +6,7 @@
     <div>
       <h2 class="leading-none text-xl font-black text-primary">SugarLine</h2>
       @if (isLoading) {
-        <div class="mt-1 h-2.5 w-20 animate-pulse rounded bg-primary/20"></div>
+        <app-loading size="sm"></app-loading>
       } @else {
         <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">
           {{ isAdmin ? 'Admin Console' : 'User Console' }}
@@ -17,12 +17,9 @@
 
   <nav class="flex-1 space-y-1 px-4 py-4">
     @if (isLoading) {
-      @for (item of skeletonItems; track $index) {
-        <div class="flex items-center gap-3 rounded-lg px-3 py-2.5">
-          <div class="size-5 animate-pulse rounded bg-primary/20"></div>
-          <div class="h-3 w-28 animate-pulse rounded bg-primary/20"></div>
-        </div>
-      }
+      <div class="flex justify-center py-8">
+        <app-loading size="md"></app-loading>
+      </div>
     } @else {
       @for (item of menuItems; track item.label) {
         @if (item.route) {

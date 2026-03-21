@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { LoadingComponent } from '../loading/loading';
 
 type SidebarItem = {
   label: string;
@@ -12,7 +13,7 @@ type SidebarItem = {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, LoadingComponent],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

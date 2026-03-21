@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RegisterRequest, Role } from '../../../../models/auth.model';
+import { LoadingComponent } from '../../../../shared/components/loading/loading';
 import { AuthService } from '../../../auth/services/auth.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LoadingComponent],
   templateUrl: './user-form.html',
   styleUrl: './user-form.css'
 })

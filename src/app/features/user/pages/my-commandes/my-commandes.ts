@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { CommandeService, CommandeFilters, PageResponse } from '../../../user/services/commande.service';
+import { CommandeService, MyCommandeFilters, PageResponse } from '../../services/commande.service';
 import { CommandeResponse, StatutCommande } from '../../../../models/commande.model';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar';
@@ -10,12 +10,12 @@ import { TableComponent, TableColumn, TableAction } from '../../../../shared/com
 import { FilterBarComponent, FilterField } from '../../../../shared/components/filter-bar/filter-bar';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
-import { CommandeDetailComponent } from '../../../user/components/commande-detail/commande-detail';
-import { CommandeFormComponent } from '../../../user/components/commande-form/commande-form';
+import { CommandeDetailComponent } from '../../components/commande-detail/commande-detail';
+import { CommandeFormComponent } from '../../components/commande-form/commande-form';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 
 @Component({
-  selector: 'app-commandes',
+  selector: 'app-my-commandes',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,10 +29,10 @@ import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
     CommandeFormComponent
   ],
   providers: [CurrencyPipe],
-  templateUrl: './commandes.html',
-  styleUrl: './commandes.css'
+  templateUrl: './my-commandes.html',
+  styleUrl: './my-commandes.css'
 })
-export class CommandesComponent implements OnInit {
+export class MyCommandesComponent implements OnInit {
   private commandeService = inject(CommandeService);
   private store = inject(Store);
   private currencyPipe = inject(CurrencyPipe);
@@ -69,10 +69,9 @@ export class CommandesComponent implements OnInit {
   ];
 
   tableColumns: TableColumn[] = [
-    { key: 'date', label: 'Date', width: '15%' },
-    { key: 'statut', label: 'Statut', width: '15%' },
-    { key: 'utilisateur', label: 'Client', width: '25%' },
-    { key: 'totalFormatted', label: 'Total', width: '20%' }
+    { key: 'date', label: 'Date', width: '20%' },
+    { key: 'statut', label: 'Statut', width: '20%' },
+    { key: 'totalFormatted', label: 'Total', width: '25%' }
   ];
 
   showDetailModal = false;
@@ -96,13 +95,6 @@ export class CommandesComponent implements OnInit {
       icon: 'edit',
       class: 'rounded-lg border border-primary/20 p-2 text-primary transition-colors hover:bg-primary/10',
       callback: (item: CommandeResponse) => this.editCommande(item),
-      visible: this.onlyEnAttente.bind(this)
-    },
-    {
-      label: 'Supprimer',
-      icon: 'delete',
-      class: 'rounded-lg border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50',
-      callback: (item: CommandeResponse) => this.openDeleteConfirm(item.id),
       visible: this.onlyEnAttente.bind(this)
     }
   ];
@@ -136,7 +128,7 @@ export class CommandesComponent implements OnInit {
     const minTotal = parseOptionalNumber(this.filters.minTotal);
     const maxTotal = parseOptionalNumber(this.filters.maxTotal);
 
-    const commandeFilters: CommandeFilters = {
+    const filters: MyCommandeFilters = {
       page: this.currentPage,
       size: this.pageSize,
       statut,
@@ -146,7 +138,7 @@ export class CommandesComponent implements OnInit {
       maxTotal
     };
 
-    this.commandeService.getAllCommandes(commandeFilters).subscribe({
+    this.commandeService.getMyCommandes(filters).subscribe({
       next: (response: PageResponse<CommandeResponse>) => {
         this.commandes = response.content;
         this.totalElements = response.totalElements;
@@ -156,7 +148,6 @@ export class CommandesComponent implements OnInit {
         this.displayCommandes = this.commandes.map(c => ({
           ...c,
           date: this.formatDate(c.date),
-          utilisateur: c.utilisateur?.username ?? '-',
           totalFormatted: this.currencyPipe.transform(c.total)
         }));
 

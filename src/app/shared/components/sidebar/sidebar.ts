@@ -41,7 +41,7 @@ export class SidebarComponent {
     return [
       { label: 'Dashboard', icon: 'dashboard', active: true },
       { label: 'My Payment', icon: 'payments' },
-      { label: 'My Commande', icon: 'shopping_bag' },
+      { label: 'My Commande', icon: 'shopping_bag', route: '/my-commandes' },
       { label: 'All Product', icon: 'cake', route: '/products' },
       { label: 'My Statistique', icon: 'analytics' },
     ];

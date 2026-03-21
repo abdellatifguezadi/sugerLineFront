@@ -9,7 +9,11 @@ import {
   selectRole
 } from '../../features/auth/store/auth.selectors';
 
-export const adminGuard: CanActivateFn = () => {
+function isAdminRole(role: string | null): boolean {
+  return (role ?? '').trim().toUpperCase() === 'ADMINISTRATEUR';
+}
+
+export const userGuard: CanActivateFn = () => {
   const router = inject(Router);
   const store = inject(Store);
 
@@ -21,16 +25,8 @@ export const adminGuard: CanActivateFn = () => {
     filter(([, , isLoading]) => !isLoading),
     take(1),
     map(([isAuthenticated, role]) => {
-      if (!isAuthenticated) {
-        return router.createUrlTree(['/login']);
-      }
-      const isAdmin = (role ?? '').trim().toLowerCase() === 'administrateur';
-      console.log(isAdmin);
-      console.log(role);
-      console.log(isAuthenticated);
-      if (!isAdmin) {
-        return router.createUrlTree(['/']);
-      }
+      if (!isAuthenticated) return router.createUrlTree(['/login']);
+      if (isAdminRole(role)) return router.createUrlTree(['/']);
       return true;
     })
   );

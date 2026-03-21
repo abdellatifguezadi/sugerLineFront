@@ -41,6 +41,7 @@
           
           <app-login-form
             [loading]="loading"
+            [error]="error$ | async"
             (formSubmit)="onLogin($event)"
           ></app-login-form>
           

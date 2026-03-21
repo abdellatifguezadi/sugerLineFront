@@ -12,6 +12,7 @@ import { LoginRequest } from '../../../../models/auth.model';
 })
 export class LoginFormComponent {
   @Input() loading = false;
+  @Input() error: string | null = null;
   @Output() formSubmit = new EventEmitter<LoginRequest>();
   
   private fb = new FormBuilder();

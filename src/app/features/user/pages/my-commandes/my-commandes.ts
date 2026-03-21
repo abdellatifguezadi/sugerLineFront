@@ -11,6 +11,7 @@ import { FilterBarComponent, FilterField } from '../../../../shared/components/f
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { CommandeDetailComponent } from '../../components/commande-detail/commande-detail';
+import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 import { CommandeFormComponent } from '../../components/commande-form/commande-form';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 
@@ -154,7 +155,7 @@ export class MyCommandesComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = 'Erreur lors du chargement des commandes';
+        this.error = getHttpErrorMessage(err);
         console.error(err);
         this.loading = false;
       }
@@ -233,7 +234,7 @@ export class MyCommandesComponent implements OnInit {
     this.commandeService.annulerCommande(id).subscribe({
       next: () => this.loadCommandes(),
       error: err => {
-        this.error = 'Erreur lors de la suppression';
+        this.error = getHttpErrorMessage(err);
         console.error(err);
       }
     });
@@ -251,7 +252,7 @@ export class MyCommandesComponent implements OnInit {
           this.loadCommandes();
         },
         error: err => {
-          this.error = 'Erreur lors de la modification';
+          this.error = getHttpErrorMessage(err);
           console.error(err);
         }
       });
@@ -263,7 +264,7 @@ export class MyCommandesComponent implements OnInit {
         this.loadCommandes();
       },
       error: err => {
-        this.error = 'Erreur lors de la création';
+        this.error = getHttpErrorMessage(err);
         console.error(err);
       }
     });

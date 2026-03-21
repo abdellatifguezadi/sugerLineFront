@@ -4,6 +4,7 @@ import { Actions, ROOT_EFFECTS_INIT, createEffect, ofType } from '@ngrx/effects'
 import { EMPTY, of } from 'rxjs';
 import { map, catchError, switchMap, tap, filter } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { getHttpErrorMessage } from '../../../core/utils/error.utils';
 import * as AuthActions from './auth.actions';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AuthEffects {
       switchMap(() =>
         this.authService.me().pipe(
           map(user => AuthActions.loadUserSuccess({ user })),
-          catchError(error => of(AuthActions.loadUserFailure({ error: error.message })))
+          catchError(error => of(AuthActions.loadUserFailure({ error: getHttpErrorMessage(error) })))
         )
       )
     )
@@ -31,7 +32,7 @@ export class AuthEffects {
       switchMap(({ credentials }) =>
         this.authService.login(credentials).pipe(
           map(response => AuthActions.loginSuccess({ response })),
-          catchError(error => of(AuthActions.loginFailure({ error: error.message })))
+          catchError(error => of(AuthActions.loginFailure({ error: getHttpErrorMessage(error) })))
         )
       )
     )
@@ -43,7 +44,7 @@ export class AuthEffects {
       switchMap(() =>
         this.authService.me().pipe(
           map(user => AuthActions.loadUserSuccess({ user })),
-          catchError(error => of(AuthActions.loadUserFailure({ error: error.message })))
+          catchError(error => of(AuthActions.loadUserFailure({ error: getHttpErrorMessage(error) })))
         )
       )
     )

@@ -8,6 +8,7 @@ import { HeaderComponent } from '../../../../shared/components/header/header';
 import { LoginFormComponent } from '../../components/login-form/login-form';
 import * as AuthActions from '../../store/auth.actions';
 import { LoginRequest } from '../../../../models/auth.model';
+import { selectAuthError } from '../../store/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent {
   private actions$ = inject(Actions);
 
   loading = false;
+  error$ = this.store.select(selectAuthError);
 
   onLogin(credentials: LoginRequest) {
     this.loading = true;
@@ -33,7 +35,6 @@ export class LoginComponent {
         if (action.type === AuthActions.loginFailure.type) {
           this.loading = false;
         }
-        // on success: loading stays true until component is destroyed by navigation
       });
   }
 }

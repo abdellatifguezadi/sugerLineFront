@@ -10,6 +10,7 @@ import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 import { Product, ProductRequest, ProductUpdate } from '../../../../models/product.model';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { ProductFormComponent } from '../../components/product-form/product-form';
+import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 import { ProductViewComponent } from '../../components/product-view/product-view';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
@@ -177,7 +178,7 @@ export class ProductsComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Erreur lors du chargement des produits';
+        this.error = getHttpErrorMessage(err);
         console.error(err);
         this.loading = false;
       }
@@ -256,7 +257,7 @@ export class ProductsComponent implements OnInit {
           this.loadProducts();
         },
         error: (err) => {
-          this.error = 'Erreur lors de la modification du produit';
+          this.error = getHttpErrorMessage(err);
           console.error(err);
         }
       });
@@ -270,7 +271,7 @@ export class ProductsComponent implements OnInit {
         this.loadProducts();
       },
       error: (err) => {
-        this.error = 'Erreur lors de la création du produit';
+        this.error = getHttpErrorMessage(err);
         console.error(err);
       }
     });
@@ -295,7 +296,7 @@ export class ProductsComponent implements OnInit {
         this.loadProducts();
       },
       error: (err) => {
-        this.error = 'Erreur lors de la suppression';
+        this.error = getHttpErrorMessage(err);
         console.error(err);
       }
     });

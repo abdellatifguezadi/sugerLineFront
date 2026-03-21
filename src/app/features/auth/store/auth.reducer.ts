@@ -19,14 +19,25 @@ function isUserStored(): boolean {
 export const initialState: AuthState = {
   user: getStoredUser(),
   isAuthenticated: isUserStored(),
-  isLoading: isUserStored()
+  isLoading: isUserStored(),
+  error: null
 };
 
 export const authReducer = createReducer(
   initialState,
   on(AuthActions.loadUser, (state) => ({
     ...state,
-    isLoading: true
+    isLoading: true,
+    error: null
+  })),
+  on(AuthActions.login, (state) => ({
+    ...state,
+    error: null
+  })),
+  on(AuthActions.loginFailure, (state, { error }) => ({
+    ...state,
+    isLoading: false,
+    error
   })),
   on(AuthActions.loginSuccess, (state, { response }) => {
     const user: User = {
@@ -49,9 +60,11 @@ export const authReducer = createReducer(
     }
 
     return {
+      ...state,
       user,
       isAuthenticated: true,
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   }),
   on(AuthActions.loadUserSuccess, (state, { user }) => {
@@ -67,9 +80,11 @@ export const authReducer = createReducer(
     }
 
     return {
+      ...state,
       user,
       isAuthenticated: true,
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   }),
   on(AuthActions.logout, AuthActions.loadUserFailure, () => {
@@ -79,7 +94,8 @@ export const authReducer = createReducer(
     return {
       user: null,
       isAuthenticated: false,
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   })
 );

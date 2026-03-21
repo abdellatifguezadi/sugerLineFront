@@ -1,5 +1,9 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-  
+            @if (error) {
+              <div class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                {{ error }}
+              </div>
+            }
             <div class="space-y-2">
               <label for="username" class="block text-sm font-bold text-[#3c1e08] dark:text-slate-300">
                 Username

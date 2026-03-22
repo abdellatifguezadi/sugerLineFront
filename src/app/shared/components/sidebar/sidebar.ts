@@ -40,11 +40,10 @@ export class SidebarComponent {
     }
 
     return [
-      { label: 'Dashboard', icon: 'dashboard', active: true },
+      { label: 'Dashboard', icon: 'dashboard', route: '/my-statistiques'},
       { label: 'My Payment', icon: 'payments', route: '/my-payments' },
       { label: 'My Commande', icon: 'shopping_bag', route: '/my-commandes' },
-      { label: 'All Product', icon: 'cake', route: '/products' },
-      { label: 'My Statistique', icon: 'analytics' },
+      { label: 'All Product', icon: 'cake', route: '/products' }
     ];
   }
 

@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import * as AuthActions from '../../../auth/store/auth.actions';
 import * as StatisticsActions from '../../store/statistics.actions';
 import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar';
+import { LoadingComponent } from '../../../../shared/components/loading/loading';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { selectStatisticsData, selectStatisticsLoading } from '../../store/statistics.selectors';
@@ -17,7 +18,8 @@ import { StatusChartComponent } from '../../components/status-chart/status-chart
     CommonModule,
     SidebarComponent,
     NavbarComponent,
-    StatusChartComponent
+    StatusChartComponent,
+    LoadingComponent
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',

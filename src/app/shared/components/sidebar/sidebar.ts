@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { LoadingComponent } from '../loading/loading';
 
 type SidebarItem = {
   label: string;
@@ -12,7 +13,7 @@ type SidebarItem = {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, LoadingComponent],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
@@ -30,7 +31,7 @@ export class SidebarComponent {
         { label: 'Dashboard', icon: 'dashboard', route: '/admin' },
         { label: 'Charges Mensuel', icon: 'payments' },
         { label: 'Rapport Mensuel', icon: 'description' },
-        { label: 'Gestion de Users', icon: 'manage_accounts' },
+        { label: 'Gestion de Users', icon: 'manage_accounts', route: '/users-management' },
         { label: 'All Product', icon: 'cake', route: '/products' },
         { label: 'Ingredient', icon: 'inventory_2', route: '/ingredients' },
         { label: 'All Commande', icon: 'shopping_bag', route: '/commandes' },

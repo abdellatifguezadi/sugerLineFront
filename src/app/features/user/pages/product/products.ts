@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 
+
   products: Product[] = [];
   displayProducts: any[] = [];
   loading = false;
@@ -95,7 +96,7 @@ export class ProductsComponent implements OnInit {
   ];
 
   getTableActions(role: string | null): TableAction[] {
-    return (role ?? '').trim() === 'Administrateur' ? this.allTableActions : this.viewOnlyTableActions;
+    return (role ?? '').trim() === 'ADMINISTRATEUR' ? this.allTableActions : this.viewOnlyTableActions;
   }
 
   private readonly viewOnlyTableActions: TableAction[] = [
@@ -119,7 +120,6 @@ export class ProductsComponent implements OnInit {
   }
 
   openEditModal(product: Product): void {
-    // Keep original product for editing modal (prixProduction is server-calculated)
     this.isEditMode = true;
     this.selectedProduct = this.products.find((p) => p.id === product.id) ?? product;
     this.showModal = true;

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LoadingComponent } from '../loading/loading';
 
 export interface TableColumn {
   key: string;
@@ -18,7 +19,7 @@ export interface TableAction {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingComponent],
   templateUrl: './table.html',
   styleUrl: './table.css'
 })

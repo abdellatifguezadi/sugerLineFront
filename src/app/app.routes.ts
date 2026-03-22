@@ -8,6 +8,7 @@ import { ProductsComponent } from './features/user/pages/product/products';
 import { MyCommandesComponent } from './features/user/pages/my-commandes/my-commandes';
 import { MyPaymentsComponent } from './features/user/pages/my-payments/my-payments';
 import { AllPaymentsComponent } from './features/admin/pages/all-payments/all-payments';
+import { UsersManagementComponent } from './features/admin/pages/users-management/users-management';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { userGuard } from './core/guards/user.guard';
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'my-commandes', component: MyCommandesComponent, canActivate: [userGuard] },
   { path: 'my-payments', component: MyPaymentsComponent, canActivate: [userGuard] },
   { path: 'all-payments', component: AllPaymentsComponent, canActivate: [adminGuard] },
+  { path: 'users-management', component: UsersManagementComponent, canActivate: [adminGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
 ];

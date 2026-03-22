@@ -6,11 +6,12 @@ import { ProductService } from '../../services/product.service';
 import { CommandeService } from '../../services/commande.service';
 import { Product } from '../../../../models/product.model';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
+import { LoadingComponent } from '../../../../shared/components/loading/loading';
 
 @Component({
   selector: 'app-commande-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LoadingComponent],
   templateUrl: './commande-form.html',
   styleUrl: './commande-form.css'
 })

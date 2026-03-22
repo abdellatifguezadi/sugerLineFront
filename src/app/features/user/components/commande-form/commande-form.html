@@ -33,7 +33,10 @@
         </div>
 
         @if (loadingProducts) {
-          <p class="text-sm text-slate-500">Chargement des produits...</p>
+          <div class="flex items-center justify-center gap-2 py-8">
+            <app-loading size="md"></app-loading>
+            <span class="text-sm text-slate-500">Chargement des produits...</span>
+          </div>
         } @else {
           <div formArrayName="commandeLines" class="space-y-3">
             @for (ctrl of commandeLines.controls; track ctrl; let i = $index) {

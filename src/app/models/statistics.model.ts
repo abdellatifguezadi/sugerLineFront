@@ -33,3 +33,19 @@ export interface StatisticsState {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface UserStatistics {
+  totalMesCommandes: number;
+  totalCommandesEnAttente: number;
+  totalCommandesLivrees: number;
+  totalCommandesAnnulees: number;
+  totalMesPaiements: number;
+  totalPaiementsEnAttente: number;
+  totalPaiementsAcceptes: number;
+  totalPaiementsAnnules: number;
+  montantMoisActuel: number;
+  montantMoisPrecedent: number;
+  mesCommandesParStatut: StatDataPoint[];
+  mesPaiementsParStatut: StatDataPoint[];
+  tauxCroissanceDepenses: number;
+}

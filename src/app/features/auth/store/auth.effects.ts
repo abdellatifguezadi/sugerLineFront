@@ -54,8 +54,9 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
-        tap(() => {
-          this.router.navigate(['/admin']);
+        tap(({ response }) => {
+          const isAdmin = (response.role ?? '').trim().toLowerCase().includes('admin');
+          this.router.navigate(isAdmin ? ['/admin'] : ['/my-statistiques']);
         })
       ),
     { dispatch: false }

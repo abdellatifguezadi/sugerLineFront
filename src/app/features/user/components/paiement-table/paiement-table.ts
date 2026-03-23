@@ -40,8 +40,12 @@ export class PaiementTableComponent {
       dateFormatted: this.formatDate(p.date),
       montantFormatted: p.montant != null ? this.currencyPipe.transform(p.montant) : '-',
       commandeInfo: p.commandeId ? `#${p.commandeId}` : '-',
-      client: p.utilisateur?.username ?? '-'
+      client: this.getClientName(p)
     }));
+  }
+
+  private getClientName(p: PaiementWithCommande): string {
+    return p.utilisateurUsername ?? p.utilisateur?.username ?? p.client ?? '-';
   }
 
   private formatDate(dateStr: string | undefined): string {

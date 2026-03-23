@@ -29,8 +29,8 @@ export class SidebarComponent {
     if (this.isAdmin) {
       return [
         { label: 'Dashboard', icon: 'dashboard', route: '/admin' },
-        { label: 'Charges Mensuel', icon: 'payments' },
-        { label: 'Rapport Mensuel', icon: 'description' },
+        { label: 'Charges Mensuel', icon: 'payments', route: '/charges' },
+        { label: 'Rapport Mensuel', icon: 'description', route: '/rapports' },
         { label: 'Gestion de Users', icon: 'manage_accounts', route: '/users-management' },
         { label: 'All Product', icon: 'cake', route: '/products' },
         { label: 'Ingredient', icon: 'inventory_2', route: '/ingredients' },

@@ -29,7 +29,7 @@ export class SidebarComponent {
     if (this.isAdmin) {
       return [
         { label: 'Dashboard', icon: 'dashboard', route: '/admin' },
-        { label: 'Charges Mensuel', icon: 'payments' },
+        { label: 'Charges Mensuel', icon: 'payments', route: '/charges' },
         { label: 'Rapport Mensuel', icon: 'description' },
         { label: 'Gestion de Users', icon: 'manage_accounts', route: '/users-management' },
         { label: 'All Product', icon: 'cake', route: '/products' },

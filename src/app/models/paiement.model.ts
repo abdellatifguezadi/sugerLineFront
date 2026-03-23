@@ -20,4 +20,6 @@ export interface PaiementWithCommande {
   commandeDate?: string;
   commandeTotal?: number;
   utilisateur?: { id: number; username?: string };
+  utilisateurUsername?: string;
+  client?: string;
 }

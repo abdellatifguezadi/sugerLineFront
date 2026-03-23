@@ -1,0 +1,48 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+  <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+    <h2 class="text-xl font-bold text-[#3c1e08]">Générer un rapport mensuel</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Mois (1-12)</label>
+        <input type="number" formControlName="mois" min="1" max="12"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          placeholder="1-12">
+        @if (form.get('mois')?.invalid && form.get('mois')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Mois entre 1 et 12</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700">Année</label>
+        <select formControlName="annee"
+          class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+          @for (a of anneeOptions; track a) {
+            <option [value]="a">{{ a }}</option>
+          }
+        </select>
+        @if (form.get('annee')?.invalid && form.get('annee')?.touched) {
+          <p class="mt-1 text-xs text-red-600">Année obligatoire</p>
+        }
+      </div>
+
+      <div class="flex gap-3 pt-4">
+        <button type="button" (click)="onCancel()"
+          class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+          Annuler
+        </button>
+        <button type="submit" [disabled]="form.invalid || loading"
+          class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2">
+          @if (loading) {
+            <app-loading size="sm" [light]="true"></app-loading>
+            <span>Génération...</span>
+          } @else {
+            <span>Générer</span>
+          }
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

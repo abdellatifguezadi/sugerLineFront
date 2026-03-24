@@ -12,6 +12,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { RapportGenererFormComponent } from '../../components/rapport-generer-form/rapport-generer-form';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 const MOIS_LABELS: Record<number, string> = {
@@ -39,6 +40,7 @@ export class RapportsComponent implements OnInit {
   private rapportService = inject(RapportService);
   private store = inject(Store);
   private currencyPipe = inject(CurrencyPipe);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
@@ -46,7 +48,6 @@ export class RapportsComponent implements OnInit {
   rapports: RapportMensuel[] = [];
   displayData: Array<RapportMensuel & { moisAnnee: string; chiffreAffairesFormatted: string; coutTotalFormatted: string; beneficeFormatted: string; tauxFormatted: string }> = [];
   loading = false;
-  error: string | null = null;
 
   currentPage = 0;
   pageSize = 10;
@@ -88,7 +89,6 @@ export class RapportsComponent implements OnInit {
 
   loadRapports(): void {
     this.loading = true;
-    this.error = null;
 
     this.rapportService.getAll(this.currentPage, this.pageSize).subscribe({
       next: (response: PageResponse<RapportMensuel>) => {
@@ -107,7 +107,7 @@ export class RapportsComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = getHttpErrorMessage(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });
@@ -119,7 +119,6 @@ export class RapportsComponent implements OnInit {
   }
 
   openGenerateModal(): void {
-    this.error = null;
     this.showModal = true;
   }
 
@@ -128,13 +127,13 @@ export class RapportsComponent implements OnInit {
   }
 
   onSuccess(): void {
-    this.error = null;
+    this.toast.showSuccess('Rapport généré.');
     this.closeModal();
     this.loadRapports();
   }
 
   onFormError(message: string): void {
-    this.error = message;
+    this.toast.showError(message);
   }
 
   openDetail(rapport: RapportMensuel): void {
@@ -162,10 +161,11 @@ export class RapportsComponent implements OnInit {
     if (id == null) return;
     this.closeDeleteConfirm();
     this.rapportService.delete(id).subscribe({
-      next: () => this.loadRapports(),
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-      }
+      next: () => {
+        this.toast.showSuccess('Rapport supprimé.');
+        this.loadRapports();
+      },
+      error: err => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 

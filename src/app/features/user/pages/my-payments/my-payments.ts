@@ -9,6 +9,7 @@ import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { PaiementTableComponent } from '../../components/paiement-table/paiement-table';
 import { FilterBarComponent, FilterField } from '../../../../shared/components/filter-bar/filter-bar';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
@@ -28,13 +29,13 @@ import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 export class MyPaymentsComponent implements OnInit {
   private paiementService = inject(PaiementService);
   private store = inject(Store);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 
   paiements: PaiementWithCommande[] = [];
   loading = false;
-  error: string | null = null;
 
   currentPage = 0;
   pageSize = 10;
@@ -61,7 +62,6 @@ export class MyPaymentsComponent implements OnInit {
 
   loadPaiements(): void {
     this.loading = true;
-    this.error = null;
 
     const statut = (this.filters['statut'] as string)?.trim() || undefined;
 
@@ -80,8 +80,7 @@ export class MyPaymentsComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });

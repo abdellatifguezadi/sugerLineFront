@@ -11,6 +11,7 @@ import { FilterBarComponent, FilterField } from '../../../../shared/components/f
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { CommandeDetailComponent } from '../../components/commande-detail/commande-detail';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 import { CommandeFormComponent } from '../../components/commande-form/commande-form';
 import { PaiementConfirmComponent } from '../../components/paiement-confirm/paiement-confirm';
@@ -39,6 +40,7 @@ export class MyCommandesComponent implements OnInit {
   private commandeService = inject(CommandeService);
   private store = inject(Store);
   private currencyPipe = inject(CurrencyPipe);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
@@ -46,7 +48,6 @@ export class MyCommandesComponent implements OnInit {
   commandes: CommandeResponse[] = [];
   displayCommandes: any[] = [];
   loading = false;
-  error: string | null = null;
 
   currentPage = 0;
   pageSize = 5;
@@ -123,7 +124,6 @@ export class MyCommandesComponent implements OnInit {
 
   loadCommandes(): void {
     this.loading = true;
-    this.error = null;
 
     const parseOptionalNumber = (value: unknown): number | undefined => {
       if (value === '' || value === null || value === undefined) return undefined;
@@ -172,8 +172,7 @@ export class MyCommandesComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });
@@ -249,21 +248,22 @@ export class MyCommandesComponent implements OnInit {
     if (id == null) return;
     this.closeDeleteConfirm();
     this.commandeService.annulerCommande(id).subscribe({
-      next: () => this.loadCommandes(),
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
+      next: () => {
+        this.toast.showSuccess('Commande annulée.');
+        this.loadCommandes();
+      },
+      error: err => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 
   onFormSaved(): void {
+    this.toast.showSuccess('Commande enregistrée.');
     this.closeFormModal();
     this.loadCommandes();
   }
 
   onFormError(msg: string): void {
-    this.error = msg;
+    this.toast.showError(msg);
   }
 
   openPaiementConfirm(commandeId: number, total: number): void {
@@ -277,11 +277,12 @@ export class MyCommandesComponent implements OnInit {
   }
 
   onPaiementSaved(): void {
+    this.toast.showSuccess('Paiement enregistré.');
     this.closePaiementConfirm();
     this.loadCommandes();
   }
 
   onPaiementError(msg: string): void {
-    this.error = msg;
+    this.toast.showError(msg);
   }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -12,7 +13,8 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 import { IngredientFormComponent } from '../../components/ingredient-form/ingredient-form';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 import { Ingredient } from '../../../../models/ingredient.model';
-import { map } from 'rxjs';
+import { map, filter } from 'rxjs';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -26,6 +28,8 @@ export class IngredientsComponent implements OnInit {
   private store = inject(Store);
   private router = inject(Router);
   private currencyPipe = inject(CurrencyPipe);
+  private toast = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
 
   private originalIngredients: Ingredient[] = [];
 
@@ -39,7 +43,6 @@ export class IngredientsComponent implements OnInit {
     })
   );
   loading$ = this.store.select(selectIngredientLoading);
-  error$ = this.store.select(selectIngredientError);
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 
@@ -73,6 +76,10 @@ export class IngredientsComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(IngredientActions.loadIngredients());
+    this.store
+      .select(selectIngredientError)
+      .pipe(filter((e): e is string => e != null), takeUntilDestroyed(this.destroyRef))
+      .subscribe((msg) => this.toast.showError(msg));
   }
 
   openCreateModal(): void {

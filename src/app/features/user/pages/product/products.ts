@@ -10,6 +10,7 @@ import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 import { Product, ProductRequest, ProductUpdate } from '../../../../models/product.model';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { ProductFormComponent } from '../../components/product-form/product-form';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 import { ProductViewComponent } from '../../components/product-view/product-view';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
@@ -38,6 +39,7 @@ export class ProductsComponent implements OnInit {
   private productService = inject(ProductService);
   private store = inject(Store);
   private currencyPipe = inject(CurrencyPipe);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
@@ -46,7 +48,6 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   displayProducts: any[] = [];
   loading = false;
-  error: string | null = null;
   showModal = false;
   isEditMode = false;
   selectedProduct: Product | null = null;
@@ -138,7 +139,6 @@ export class ProductsComponent implements OnInit {
 
   loadProducts(): void {
     this.loading = true;
-    this.error = null;
 
     const parseOptionalNumber = (value: unknown): number | undefined => {
       if (value === '' || value === null || value === undefined) return undefined;
@@ -178,8 +178,7 @@ export class ProductsComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });
@@ -253,13 +252,11 @@ export class ProductsComponent implements OnInit {
       const update: ProductUpdate = payloadBase as ProductUpdate;
       this.productService.updateProduct(this.selectedProduct.id, update).subscribe({
         next: () => {
+          this.toast.showSuccess('Produit mis à jour.');
           this.closeModal();
           this.loadProducts();
         },
-        error: (err) => {
-          this.error = getHttpErrorMessage(err);
-          console.error(err);
-        }
+        error: (err) => this.toast.showError(getHttpErrorMessage(err))
       });
       return;
     }
@@ -267,13 +264,11 @@ export class ProductsComponent implements OnInit {
     const create: ProductRequest = payloadBase as ProductRequest;
     this.productService.createProduct(create).subscribe({
       next: () => {
+        this.toast.showSuccess('Produit créé.');
         this.closeModal();
         this.loadProducts();
       },
-      error: (err) => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
+      error: (err) => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 
@@ -293,12 +288,10 @@ export class ProductsComponent implements OnInit {
     this.closeDeleteConfirm();
     this.productService.deleteProduct(id).subscribe({
       next: () => {
+        this.toast.showSuccess('Produit supprimé.');
         this.loadProducts();
       },
-      error: (err) => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
+      error: (err) => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 }

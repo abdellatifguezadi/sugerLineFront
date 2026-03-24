@@ -89,7 +89,7 @@ export class MyCommandesComponent implements OnInit {
   private onlyEnAttente = (item: any) => (item?.statut ?? '') === StatutCommande.EN_ATTENTE;
 
   private canPay = (item: any) => {
-    if ((item?.statut ?? '') !== StatutCommande.EN_ATTENTE) return false;
+    if ((item?.statut ?? '') !== StatutCommande.LIVREE) return false;
     const p = item?.paiement;
     return !p || (p.statut && String(p.statut).toUpperCase() === 'ANNULE');
   };

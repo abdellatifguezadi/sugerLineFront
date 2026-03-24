@@ -12,6 +12,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { ChargesFormComponent } from '../../components/charges-form/charges-form';
 import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 const MOIS_LABELS: Record<number, string> = {
@@ -39,6 +40,7 @@ export class ChargesComponent implements OnInit {
   private chargesService = inject(ChargesService);
   private store = inject(Store);
   private currencyPipe = inject(CurrencyPipe);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
@@ -46,7 +48,6 @@ export class ChargesComponent implements OnInit {
   charges: ChargesMensuelles[] = [];
   displayData: Array<ChargesMensuelles & { moisAnnee: string; totalFormatted: string }> = [];
   loading = false;
-  error: string | null = null;
 
   currentPage = 0;
   pageSize = 10;
@@ -93,7 +94,6 @@ export class ChargesComponent implements OnInit {
 
   loadCharges(): void {
     this.loading = true;
-    this.error = null;
 
     this.chargesService.getAll({ page: this.currentPage, size: this.pageSize }).subscribe({
       next: (response: PageResponse<ChargesMensuelles>) => {
@@ -115,7 +115,7 @@ export class ChargesComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = getHttpErrorMessage(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });
@@ -145,13 +145,13 @@ export class ChargesComponent implements OnInit {
   }
 
   onSuccess(): void {
-    this.error = null;
+    this.toast.showSuccess('Charges enregistrées.');
     this.closeModal();
     this.loadCharges();
   }
 
   onFormError(message: string): void {
-    this.error = message;
+    this.toast.showError(message);
   }
 
   openDeleteConfirm(id: number): void {
@@ -169,10 +169,11 @@ export class ChargesComponent implements OnInit {
     if (id == null) return;
     this.closeDeleteConfirm();
     this.chargesService.delete(id).subscribe({
-      next: () => this.loadCharges(),
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-      }
+      next: () => {
+        this.toast.showSuccess('Charges supprimées.');
+        this.loadCharges();
+      },
+      error: err => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 }

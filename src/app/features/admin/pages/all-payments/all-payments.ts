@@ -11,6 +11,7 @@ import { PaiementTableComponent } from '../../../user/components/paiement-table/
 import { FilterBarComponent, FilterField } from '../../../../shared/components/filter-bar/filter-bar';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
@@ -31,13 +32,13 @@ import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 export class AllPaymentsComponent implements OnInit {
   private paiementService = inject(PaiementService);
   private store = inject(Store);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 
   paiements: PaiementWithCommande[] = [];
   loading = false;
-  error: string | null = null;
 
   currentPage = 0;
   pageSize = 10;
@@ -88,7 +89,6 @@ export class AllPaymentsComponent implements OnInit {
 
   loadPaiements(): void {
     this.loading = true;
-    this.error = null;
 
     const statut = (this.filters['statut'] as string)?.trim() || undefined;
 
@@ -107,8 +107,7 @@ export class AllPaymentsComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });
@@ -145,11 +144,11 @@ export class AllPaymentsComponent implements OnInit {
     if (id == null) return;
     this.closeAccepterConfirm();
     this.paiementService.accepterPaiement(id).subscribe({
-      next: () => this.loadPaiements(),
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
+      next: () => {
+        this.toast.showSuccess('Paiement accepté.');
+        this.loadPaiements();
+      },
+      error: err => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 
@@ -168,11 +167,11 @@ export class AllPaymentsComponent implements OnInit {
     if (id == null) return;
     this.closeAnnulerConfirm();
     this.paiementService.annulerPaiement(id).subscribe({
-      next: () => this.loadPaiements(),
-      error: err => {
-        this.error = getHttpErrorMessage(err);
-        console.error(err);
-      }
+      next: () => {
+        this.toast.showSuccess('Paiement annulé.');
+        this.loadPaiements();
+      },
+      error: err => this.toast.showError(getHttpErrorMessage(err))
     });
   }
 }

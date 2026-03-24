@@ -1,0 +1,17 @@
+@if (toast) {
+  <div class="fixed top-4 right-4 z-[9999]">
+  <div
+    class="app-toast"
+    [class.app-toast--success]="toast.type === 'success'"
+    [class.app-toast--error]="toast.type === 'error'"
+    role="alert">
+    <span class="material-icons app-toast__icon">
+      {{ toast.type === 'success' ? 'check_circle' : 'error' }}
+    </span>
+    <span class="app-toast__message">{{ toast.message }}</span>
+    <button type="button" class="app-toast__close" (click)="close()" aria-label="Fermer">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+  </div>
+}

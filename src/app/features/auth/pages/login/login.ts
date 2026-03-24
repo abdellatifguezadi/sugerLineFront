@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
-import { take } from 'rxjs/operators';
+import { take, filter } from 'rxjs/operators';
 import { HeaderComponent } from '../../../../shared/components/header/header';
 import { LoginFormComponent } from '../../components/login-form/login-form';
 import * as AuthActions from '../../store/auth.actions';
 import { LoginRequest } from '../../../../models/auth.model';
 import { selectAuthError } from '../../store/auth.selectors';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -20,9 +22,20 @@ import { selectAuthError } from '../../store/auth.selectors';
 export class LoginComponent {
   private store = inject(Store);
   private actions$ = inject(Actions);
+  private toast = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
 
   loading = false;
-  error$ = this.store.select(selectAuthError);
+
+  constructor() {
+    this.store
+      .select(selectAuthError)
+      .pipe(
+        filter((e): e is string => e != null),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((msg) => this.toast.showError(msg));
+  }
 
   onLogin(credentials: LoginRequest) {
     this.loading = true;

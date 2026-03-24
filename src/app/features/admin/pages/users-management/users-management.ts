@@ -9,6 +9,7 @@ import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { UserFormComponent } from '../../components/user-form/user-form';
 import { TableComponent, TableColumn } from '../../../../shared/components/table/table';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
@@ -28,14 +29,13 @@ import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 export class UsersManagementComponent implements OnInit {
   private store = inject(Store);
   private authService = inject(AuthService);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 
   users: User[] = [];
   loading = false;
-  error: string | null = null;
-  success: string | null = null;
 
   currentPage = 0;
   pageSize = 5;
@@ -57,7 +57,6 @@ export class UsersManagementComponent implements OnInit {
 
   loadUsers(): void {
     this.loading = true;
-    this.error = null;
 
     this.authService.getAllUsers(this.currentPage, this.pageSize).subscribe({
       next: (response) => {
@@ -68,7 +67,7 @@ export class UsersManagementComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = getHttpErrorMessage(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });
@@ -80,8 +79,6 @@ export class UsersManagementComponent implements OnInit {
   }
 
   openCreateModal(): void {
-    this.error = null;
-    this.success = null;
     this.showModal = true;
   }
 
@@ -90,12 +87,12 @@ export class UsersManagementComponent implements OnInit {
   }
 
   onSuccess(message: string): void {
-    this.success = message;
+    this.toast.showSuccess(message);
     this.closeModal();
     this.loadUsers();
   }
 
   onError(message: string): void {
-    this.error = message;
+    this.toast.showError(message);
   }
 }

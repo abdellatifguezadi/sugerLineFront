@@ -8,6 +8,7 @@ import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar'
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { LoadingComponent } from '../../../../shared/components/loading/loading';
 import { StatusChartComponent } from '../../../admin/components/status-chart/status-chart';
+import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
@@ -26,13 +27,13 @@ import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 export class MyStatistiquesComponent implements OnInit {
   private store = inject(Store);
   private statisticsService = inject(StatisticsService);
+  private toast = inject(ToastService);
 
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 
   stats: UserStatistics | null = null;
   loading = false;
-  error: string | null = null;
 
   ngOnInit(): void {
     this.loadStats();
@@ -40,7 +41,6 @@ export class MyStatistiquesComponent implements OnInit {
 
   loadStats(): void {
     this.loading = true;
-    this.error = null;
 
     this.statisticsService.getMesStatistiques().subscribe({
       next: (data) => {
@@ -48,7 +48,7 @@ export class MyStatistiquesComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        this.error = getHttpErrorMessage(err);
+        this.toast.showError(getHttpErrorMessage(err));
         this.loading = false;
       }
     });

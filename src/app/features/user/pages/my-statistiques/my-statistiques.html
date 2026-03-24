@@ -12,10 +12,6 @@
           <div class="flex min-h-[400px] items-center justify-center">
             <app-loading size="lg"></app-loading>
           </div>
-        } @else if (error) {
-          <div class="rounded-lg border border-red-200 bg-red-50 p-4">
-            <p class="text-sm font-medium text-red-800">{{ error }}</p>
-          </div>
         } @else if (stats) {
 
           <div class="grid grid-cols-2 gap-4 md:grid-cols-4">

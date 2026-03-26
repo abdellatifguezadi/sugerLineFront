@@ -58,7 +58,7 @@
   <app-product-form
     [product]="selectedProduct"
     [isEditMode]="isEditMode"
-    (submitForm)="onSubmit($event)"
+    (saved)="onProductSaved()"
     (cancel)="closeModal()">
   </app-product-form>
 }

@@ -4,14 +4,11 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { Ingredient } from '../../../../models/ingredient.model';
-import { Product } from '../../../../models/product.model';
+import { Product, ProductRequest, ProductUpdate } from '../../../../models/product.model';
 import { selectAllIngredients } from '../../../admin/store/ingredient.selectors';
-
-type ProductFormValue = {
-  nom: string;
-  prixVente: number;
-  ingredientProduits: { ingredientId: number; quantite: number }[];
-};
+import { ProductService } from '../../services/product.service';
+import { ToastService } from '../../../../core/services/toast.service';
+import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 
 @Component({
   selector: 'app-product-form',
@@ -23,11 +20,13 @@ type ProductFormValue = {
 export class ProductFormComponent implements OnInit {
   @Input() product: Product | null = null;
   @Input() isEditMode = false;
-  @Output() submitForm = new EventEmitter<ProductFormValue>();
+  @Output() saved = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
   private store = inject(Store);
+  private productService = inject(ProductService);
+  private toast = inject(ToastService);
 
   ingredients: Ingredient[] = [];
   productForm: FormGroup = this.fb.group({
@@ -98,7 +97,30 @@ export class ProductFormComponent implements OnInit {
       this.productForm.markAllAsTouched();
       return;
     }
-    this.submitForm.emit(this.productForm.value as ProductFormValue);
+
+    const raw = this.productForm.value;
+    const ingredientProduits = (raw.ingredientProduits as { ingredientId: number; quantite: number }[]).map(ip => ({
+      ingredientId: Number(ip.ingredientId),
+      quantite: Number(ip.quantite)
+    }));
+
+    const payload = {
+      nom: raw.nom,
+      prixVente: Number(raw.prixVente),
+      ingredientProduits
+    };
+
+    const obs = this.isEditMode && this.product
+      ? this.productService.updateProduct(this.product.id, payload as ProductUpdate)
+      : this.productService.createProduct(payload as ProductRequest);
+
+    obs.subscribe({
+      next: () => {
+        this.toast.showSuccess(this.isEditMode ? 'Produit mis à jour.' : 'Produit créé.');
+        this.saved.emit();
+      },
+      error: (err) => this.toast.showError(getHttpErrorMessage(err))
+    });
   }
 
   onCancel(): void {

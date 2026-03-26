@@ -26,7 +26,7 @@ export const userGuard: CanActivateFn = () => {
     take(1),
     map(([isAuthenticated, role]) => {
       if (!isAuthenticated) return router.createUrlTree(['/login']);
-      if (isAdminRole(role)) return router.createUrlTree(['/']);
+      if (isAdminRole(role)) return router.createUrlTree(['/admin']);
       return true;
     })
   );

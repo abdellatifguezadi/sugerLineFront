@@ -16,9 +16,9 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <a class="hidden px-4 py-2 text-sm font-bold text-espresso sm:block" routerLink="/login">Login</a>
-        <a class="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90" routerLink="/login">
-          Get Started
+        <a class="hidden px-4 py-2 text-sm font-bold text-espresso sm:block" [routerLink]="dashboardLink">{{ loginLabel }}</a>
+        <a class="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90" [routerLink]="dashboardLink">
+          {{ getStartedLabel }}
         </a>
       </div>
     </header>
@@ -38,8 +38,8 @@
             </div>
 
             <div class="flex flex-col gap-4 sm:flex-row">
-              <a class="flex h-14 items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white transition-all hover:shadow-lg" routerLink="/login">
-                Get Started Free
+              <a class="flex h-14 items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-white transition-all hover:shadow-lg" [routerLink]="dashboardLink">
+                {{ heroCtaLabel }}
               </a>
             </div>
 

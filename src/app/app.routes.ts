@@ -12,6 +12,7 @@ import { UsersManagementComponent } from './features/admin/pages/users-managemen
 import { ChargesComponent } from './features/admin/pages/charges/charges';
 import { RapportsComponent } from './features/admin/pages/rapports/rapports';
 import { MyStatistiquesComponent } from './features/user/pages/my-statistiques/my-statistiques';
+import { NotFoundComponent } from './features/not-found/not-found';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { userGuard } from './core/guards/user.guard';
@@ -31,5 +32,5 @@ export const routes: Routes = [
   { path: 'rapports', component: RapportsComponent, canActivate: [adminGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [authGuard] },
   { path: 'my-statistiques', component: MyStatistiquesComponent, canActivate: [userGuard] },
-  { path: '**', redirectTo: '' }
+  { path: '**', component: NotFoundComponent }
 ];

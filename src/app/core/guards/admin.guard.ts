@@ -29,7 +29,7 @@ export const adminGuard: CanActivateFn = () => {
       console.log(role);
       console.log(isAuthenticated);
       if (!isAdmin) {
-        return router.createUrlTree(['/']);
+        return router.createUrlTree(['/My-statistiques']);
       }
       return true;
     })

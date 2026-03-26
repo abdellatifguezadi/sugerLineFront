@@ -50,15 +50,15 @@
       </div>
     }
     
-    <div class="flex items-end gap-2">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-end">
       <button 
         (click)="onApply()"
-        class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90">
+        class="w-full flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 sm:w-auto">
         Filtrer
       </button>
       <button 
         (click)="onClear()"
-        class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+        class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:w-auto">
         Réinitialiser
       </button>
     </div>

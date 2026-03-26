@@ -31,6 +31,8 @@ export class IngredientsComponent implements OnInit {
   private toast = inject(ToastService);
   private destroyRef = inject(DestroyRef);
 
+  sidebarOpen = false;
+
   private originalIngredients: Ingredient[] = [];
 
   ingredients$ = this.store.select(selectAllIngredients).pipe(

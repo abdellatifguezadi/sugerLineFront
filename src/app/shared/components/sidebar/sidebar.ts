@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LoadingComponent } from '../loading/loading';
@@ -20,6 +20,12 @@ type SidebarItem = {
 export class SidebarComponent {
   @Input() role: string | null = null;
   @Input() isLoading = true;
+  @Input() mobileOpen = false;
+  @Output() mobileOpenChange = new EventEmitter<boolean>();
+
+  closeMobile(): void {
+    this.mobileOpenChange.emit(false);
+  }
 
   get isAdmin(): boolean {
     return (this.role ?? '').trim().toLowerCase().includes('admin');

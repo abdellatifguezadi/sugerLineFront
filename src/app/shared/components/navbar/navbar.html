@@ -1,6 +1,16 @@
 <header class="sticky top-0 z-40 border-b border-primary/10 bg-white/90 px-4 py-3 backdrop-blur md:px-6">
   <div class="flex items-center justify-between">
-    <h1 class="text-lg font-extrabold text-[#3c1e08] md:text-xl">{{ title }}</h1>
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        class="inline-flex items-center justify-center rounded-lg border border-primary/20 p-2 text-primary transition-colors hover:bg-primary/10 md:hidden"
+        (click)="menuToggle.emit()"
+        aria-label="Ouvrir le menu"
+      >
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <h1 class="text-lg font-extrabold text-[#3c1e08] md:text-xl">{{ title }}</h1>
+    </div>
     <button type="button" (click)="logout()"
       class="rounded-lg border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10">
       Déconnexion

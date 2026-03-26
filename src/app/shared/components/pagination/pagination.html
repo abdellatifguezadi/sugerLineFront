@@ -7,19 +7,21 @@
       Précédent
     </button>
 
-    <div class="flex items-center gap-2">
-      @for (page of pages; track page) {
-        <button
-          (click)="goTo(page)"
-          [class.bg-primary]="currentPage === page"
-          [class.text-white]="currentPage === page"
-          [class.border-primary]="currentPage === page"
-          [class.text-primary]="currentPage !== page"
-          [class.border-primary/20]="currentPage !== page"
-          class="rounded-lg border px-3 py-1 text-sm font-semibold transition-colors hover:bg-primary/10">
-          {{ page + 1 }}
-        </button>
-      }
+    <div class="mx-3 flex-1 overflow-x-auto">
+      <div class="flex min-w-max items-center justify-center gap-2">
+        @for (page of pages; track page) {
+          <button
+            (click)="goTo(page)"
+            [class.bg-primary]="currentPage === page"
+            [class.text-white]="currentPage === page"
+            [class.border-primary]="currentPage === page"
+            [class.text-primary]="currentPage !== page"
+            [class.border-primary/20]="currentPage !== page"
+            class="rounded-lg border px-3 py-1 text-sm font-semibold transition-colors hover:bg-primary/10">
+            {{ page + 1 }}
+          </button>
+        }
+      </div>
     </div>
 
     <button

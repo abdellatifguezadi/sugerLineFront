@@ -34,6 +34,8 @@ export class AllPaymentsComponent implements OnInit {
   private store = inject(Store);
   private toast = inject(ToastService);
 
+  sidebarOpen = false;
+
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 

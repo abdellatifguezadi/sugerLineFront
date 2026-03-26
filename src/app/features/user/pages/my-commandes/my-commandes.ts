@@ -42,6 +42,8 @@ export class MyCommandesComponent implements OnInit {
   private currencyPipe = inject(CurrencyPipe);
   private toast = inject(ToastService);
 
+  sidebarOpen = false;
+
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 

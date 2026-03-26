@@ -31,6 +31,8 @@ export class UsersManagementComponent implements OnInit {
   private authService = inject(AuthService);
   private toast = inject(ToastService);
 
+  sidebarOpen = false;
+
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 

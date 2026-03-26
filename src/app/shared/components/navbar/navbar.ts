@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -13,6 +13,7 @@ import * as AuthActions from '../../../features/auth/store/auth.actions';
 })
 export class NavbarComponent {
   @Input() title = 'Dashboard';
+  @Output() menuToggle = new EventEmitter<void>();
   
   private store = inject(Store);
   private router = inject(Router);

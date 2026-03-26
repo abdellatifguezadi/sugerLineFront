@@ -29,6 +29,8 @@ export class MyStatistiquesComponent implements OnInit {
   private statisticsService = inject(StatisticsService);
   private toast = inject(ToastService);
 
+  sidebarOpen = false;
+
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
 

@@ -1,17 +1,23 @@
 <div class="min-h-screen bg-[#fdfaf7] text-[#3c1e08]">
   <div class="flex min-h-screen">
-    <app-sidebar [role]="connectedRole$ | async" [isLoading]="(authLoading$ | async) ?? true"></app-sidebar>
+    <app-sidebar
+      [role]="connectedRole$ | async"
+      [isLoading]="(authLoading$ | async) ?? true"
+      [mobileOpen]="sidebarOpen"
+      (mobileOpenChange)="sidebarOpen = $event"
+    ></app-sidebar>
 
     <div class="flex flex-1 flex-col overflow-hidden">
 
-      <app-navbar title="Gestion des utilisateurs"></app-navbar>
+      <app-navbar title="Gestion des utilisateurs" (menuToggle)="sidebarOpen = !sidebarOpen"></app-navbar>
 
       <main class="flex-1 overflow-y-auto p-4 md:p-6">
 
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-sm text-slate-600">{{ totalElements }} utilisateur(s) trouvé(s)</p>
-          <button (click)="openCreateModal()"
-            class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90">
+          <button
+            (click)="openCreateModal()"
+            class="w-full rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 sm:w-auto">
             + Nouvel utilisateur
           </button>
         </div>

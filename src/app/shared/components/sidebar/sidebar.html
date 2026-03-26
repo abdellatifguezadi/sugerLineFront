@@ -1,3 +1,74 @@
+@if (mobileOpen) {
+  <div class="fixed inset-0 z-50 md:hidden">
+    <div class="absolute inset-0 bg-black/50" (click)="closeMobile()"></div>
+    <aside class="absolute inset-y-0 left-0 w-64 max-w-[80vw] overflow-y-auto border-r border-primary/10 bg-[#fdfaf7] shadow-xl">
+      <div class="flex items-center justify-between gap-3 p-6">
+        <div class="flex items-center gap-3">
+          <div class="rounded-lg bg-primary p-2 text-white">
+            <span class="material-symbols-outlined">bakery_dining</span>
+          </div>
+          <div>
+            <h2 class="leading-none text-xl font-black text-primary">SugarLine</h2>
+            @if (isLoading) {
+              <app-loading size="sm"></app-loading>
+            } @else {
+              <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                {{ isAdmin ? 'Admin Console' : 'User Console' }}
+              </p>
+            }
+          </div>
+        </div>
+        <button
+          type="button"
+          class="rounded-lg border border-primary/20 p-2 text-primary transition-colors hover:bg-primary/10"
+          (click)="closeMobile()"
+          aria-label="Fermer le menu"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <nav class="flex-1 space-y-1 px-4 py-4">
+        @if (isLoading) {
+          <div class="flex justify-center py-8">
+            <app-loading size="md"></app-loading>
+          </div>
+        } @else {
+          @for (item of menuItems; track item.label) {
+            @if (item.route) {
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="bg-primary text-white font-medium"
+                [routerLinkActiveOptions]="{exact: false}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#3c1e08] transition-colors hover:bg-primary/10 hover:text-primary"
+                (click)="closeMobile()"
+              >
+                <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+                <span>{{ item.label }}</span>
+              </a>
+            } @else {
+              <a
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors"
+                [class.bg-primary]="item.active"
+                [class.text-white]="item.active"
+                [class.font-medium]="item.active"
+                [class.text-[#3c1e08]]="!item.active"
+                [class.hover:bg-primary/10]="!item.active"
+                [class.hover:text-primary]="!item.active"
+                href="#"
+                (click)="closeMobile()"
+              >
+                <span class="material-symbols-outlined text-[20px]">{{ item.icon }}</span>
+                <span>{{ item.label }}</span>
+              </a>
+            }
+          }
+        }
+      </nav>
+    </aside>
+  </div>
+}
+
 <aside class="hidden w-64 flex-col border-r border-primary/10 bg-[#fdfaf7] md:flex">
   <div class="flex items-center gap-3 p-6">
     <div class="rounded-lg bg-primary p-2 text-white">

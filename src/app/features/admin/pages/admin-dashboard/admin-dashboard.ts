@@ -28,6 +28,8 @@ export class AdminDashboardComponent implements OnInit {
   private store = inject(Store);
   private router = inject(Router);
 
+  sidebarOpen = false;
+
   connectedRole$ = this.store.select(selectRole);
   authLoading$ = this.store.select(selectIsLoading);
   stats$ = this.store.select(selectStatisticsData);

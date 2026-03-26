@@ -16,8 +16,8 @@
           type="date"
           formControlName="date"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" />
-        @if (commandeForm.get('date')?.invalid && commandeForm.get('date')?.touched) {
-          <p class="mt-1 text-xs text-red-600">La date est obligatoire</p>
+        @if (getError('date')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('date') }}</p>
         }
       </div>
 

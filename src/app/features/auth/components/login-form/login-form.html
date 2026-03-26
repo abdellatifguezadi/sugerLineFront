@@ -13,8 +13,8 @@
                   class="w-full py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white text-black focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none pl-12 pr-4"
                 />
               </div>
-              @if (usernameControl.invalid && (usernameControl.touched || usernameControl.dirty)) {
-                <p class="text-red-600 text-xs mt-1 font-semibold">Username requis</p>
+              @if (getError('username')) {
+                <p class="text-red-600 text-xs mt-1 font-semibold">{{ getError('username') }}</p>
               }
             </div>
             
@@ -32,8 +32,8 @@
                   class="w-full py-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white text-black focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none pl-12 pr-4"
                 />
               </div>
-              @if (passwordControl.invalid && (passwordControl.touched || passwordControl.dirty)) {
-                <p class="text-red-600 text-xs mt-1 font-semibold">Mot de passe requis</p>
+              @if (getError('motDePasse')) {
+                <p class="text-red-600 text-xs mt-1 font-semibold">{{ getError('motDePasse') }}</p>
               }
             </div>
             

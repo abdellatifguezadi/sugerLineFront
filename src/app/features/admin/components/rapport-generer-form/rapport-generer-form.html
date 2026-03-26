@@ -9,8 +9,8 @@
         <input type="number" formControlName="mois" min="1" max="12"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="1-12">
-        @if (form.get('mois')?.invalid && form.get('mois')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Mois entre 1 et 12</p>
+        @if (getError('mois')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('mois') }}</p>
         }
       </div>
 
@@ -22,8 +22,8 @@
             <option [value]="a">{{ a }}</option>
           }
         </select>
-        @if (form.get('annee')?.invalid && form.get('annee')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Année obligatoire</p>
+        @if (getError('annee')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('annee') }}</p>
         }
       </div>
 

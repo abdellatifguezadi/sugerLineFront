@@ -13,8 +13,8 @@
             formControlName="nom"
             class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Ex: Gâteau au chocolat" />
-          @if (productForm.get('nom')?.invalid && productForm.get('nom')?.touched) {
-            <p class="mt-1 text-xs text-red-600">Le nom est obligatoire (2-100 caractères)</p>
+          @if (getError('nom')) {
+            <p class="mt-1 text-xs text-red-600">{{ getError('nom') }}</p>
           }
         </div>
 
@@ -26,8 +26,8 @@
             step="0.0001"
             class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="25.00" />
-          @if (productForm.get('prixVente')?.invalid && productForm.get('prixVente')?.touched) {
-            <p class="mt-1 text-xs text-red-600">Le prix doit être positif</p>
+          @if (getError('prixVente')) {
+            <p class="mt-1 text-xs text-red-600">{{ getError('prixVente') }}</p>
           }
         </div>
       </div>

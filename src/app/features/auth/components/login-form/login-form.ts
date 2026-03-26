@@ -38,4 +38,18 @@ export class LoginFormComponent {
       this.loginForm.markAllAsTouched();
     }
   }
+
+  getError(controlName: string): string {
+    const control = this.loginForm.get(controlName);
+
+    if (!control || (!control.touched && !control.dirty) || control.valid) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Ce champ est obligatoire';
+    }
+
+    return 'Champ invalide';
+  }
 }

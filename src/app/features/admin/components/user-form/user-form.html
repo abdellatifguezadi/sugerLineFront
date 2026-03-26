@@ -9,8 +9,8 @@
         <input type="text" formControlName="username"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Ex: john_doe">
-        @if (userForm.get('username')?.invalid && userForm.get('username')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Username est obligatoire</p>
+        @if (getError('username')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('username') }}</p>
         }
       </div>
 
@@ -19,8 +19,8 @@
         <input type="email" formControlName="email"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Ex: john@example.com">
-        @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Email valide requis</p>
+        @if (getError('email')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('email') }}</p>
         }
       </div>
 
@@ -29,8 +29,8 @@
         <input type="password" formControlName="motDePasse"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="••••••••">
-        @if (userForm.get('motDePasse')?.invalid && userForm.get('motDePasse')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Mot de passe requis (min. 4 caractères)</p>
+        @if (getError('motDePasse')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('motDePasse') }}</p>
         }
       </div>
 
@@ -39,8 +39,8 @@
         <input type="text" formControlName="fullName"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Ex: John Doe">
-        @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Full name est obligatoire</p>
+        @if (getError('fullName')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('fullName') }}</p>
         }
       </div>
 

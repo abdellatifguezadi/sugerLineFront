@@ -11,8 +11,8 @@
         <input type="text" formControlName="nom"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Ex: Farine">
-        @if (ingredientForm.get('nom')?.invalid && ingredientForm.get('nom')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Le nom est obligatoire (2-100 caractères)</p>
+        @if (getError('nom')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('nom') }}</p>
         }
       </div>
 
@@ -21,8 +21,8 @@
         <input type="text" formControlName="type"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Ex: CEREALE">
-        @if (ingredientForm.get('type')?.invalid && ingredientForm.get('type')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Le type est obligatoire</p>
+        @if (getError('type')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('type') }}</p>
         }
       </div>
 
@@ -31,8 +31,8 @@
         <input type="text" formControlName="unite"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Ex: g, kg, L">
-        @if (ingredientForm.get('unite')?.invalid && ingredientForm.get('unite')?.touched) {
-          <p class="mt-1 text-xs text-red-600">L'unité est obligatoire</p>
+        @if (getError('unite')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('unite') }}</p>
         }
       </div>
 
@@ -41,8 +41,8 @@
         <input type="number" formControlName="prixUnitaire" step="0.0001"
           class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="0.0085">
-        @if (ingredientForm.get('prixUnitaire')?.invalid && ingredientForm.get('prixUnitaire')?.touched) {
-          <p class="mt-1 text-xs text-red-600">Le prix doit être positif</p>
+        @if (getError('prixUnitaire')) {
+          <p class="mt-1 text-xs text-red-600">{{ getError('prixUnitaire') }}</p>
         }
       </div>
 

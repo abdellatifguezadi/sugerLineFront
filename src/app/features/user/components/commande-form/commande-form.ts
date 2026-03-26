@@ -127,4 +127,22 @@ export class CommandeFormComponent implements OnInit {
   onCancel(): void {
     this.cancel.emit();
   }
+
+  getError(controlName: string): string {
+    const control = this.commandeForm.get(controlName);
+
+    if (!control || !control.touched || control.valid) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Ce champ est obligatoire';
+    }
+
+    if (control.errors?.['min']) {
+      return `Minimum ${control.errors['min'].min}`;
+    }
+
+    return 'Champ invalide';
+  }
 }

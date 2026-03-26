@@ -40,4 +40,30 @@ export class IngredientFormComponent implements OnInit {
   onCancel(): void {
     this.cancel.emit();
   }
+
+  getError(controlName: string): string {
+    const control = this.ingredientForm.get(controlName);
+
+    if (!control || !control.touched || control.valid) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Ce champ est obligatoire';
+    }
+
+    if (control.errors?.['minlength']) {
+      return `Minimum ${control.errors['minlength'].requiredLength} caracters`;
+    }
+
+    if (control.errors?.['maxlength']) {
+      return `Maximum ${control.errors['maxlength'].requiredLength} caracters`;
+    }
+
+    if (control.errors?.['min']) {
+      return 'La valeur doit etre positive';
+    }
+
+    return 'Champ invalide';
+  }
 }

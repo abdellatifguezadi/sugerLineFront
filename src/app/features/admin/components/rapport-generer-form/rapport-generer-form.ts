@@ -54,4 +54,26 @@ export class RapportGenererFormComponent {
   onCancel(): void {
     this.cancel.emit();
   }
+
+  getError(controlName: string): string {
+    const control = this.form.get(controlName);
+
+    if (!control || !control.touched || control.valid) {
+      return '';
+    }
+
+    if (control.errors?.['required']) {
+      return 'Ce champ est obligatoire';
+    }
+
+    if (control.errors?.['min']) {
+      return `Minimum ${control.errors['min'].min}`;
+    }
+
+    if (control.errors?.['max']) {
+      return `Maximum ${control.errors['max'].max}`;
+    }
+
+    return 'Champ invalide';
+  }
 }

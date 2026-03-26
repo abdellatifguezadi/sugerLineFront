@@ -230,24 +230,24 @@ export class ProductsComponent implements OnInit {
     this.openEditModal(product);
   }
 
-  private normalizeIngredientProduits(
-    rows: { ingredientId: number; quantite: number }[]
-  ): { ingredientId: number; quantite: number }[] {
-    const map = new Map<number, number>();
-    for (const r of rows ?? []) {
-      const id = Number(r.ingredientId);
-      const q = Number(r.quantite);
-      if (!id || !Number.isFinite(id) || !Number.isFinite(q) || q <= 0) continue;
-      map.set(id, (map.get(id) ?? 0) + q);
-    }
-    return [...map.entries()].map(([ingredientId, quantite]) => ({ ingredientId, quantite }));
-  }
-
   onSubmit(formData: { nom: string; prixVente: number; ingredientProduits: any[] }): void {
+    const normalizedIngredientProduits = Array.from(
+      (formData.ingredientProduits ?? []).reduce<Map<number, number>>((acc, r) => {
+        const ingredientId = Number(r?.ingredientId);
+        const quantite = Number(r?.quantite);
+
+        // Same validation logic as before: skip invalid ingredientId / quantite <= 0
+        if (!ingredientId || !Number.isFinite(ingredientId) || !Number.isFinite(quantite) || quantite <= 0) return acc;
+
+        acc.set(ingredientId, (acc.get(ingredientId) ?? 0) + quantite);
+        return acc;
+      }, new Map<number, number>())
+    ).map(([ingredientId, quantite]) => ({ ingredientId, quantite }));
+
     const payloadBase = {
       nom: formData.nom,
       prixVente: Number(formData.prixVente),
-      ingredientProduits: this.normalizeIngredientProduits(formData.ingredientProduits)
+      ingredientProduits: normalizedIngredientProduits
     };
 
     if (this.isEditMode && this.selectedProduct) {

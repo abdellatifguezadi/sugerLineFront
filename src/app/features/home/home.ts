@@ -37,11 +37,7 @@ export class HomeComponent {
     return this.isAuthenticated() ? 'Dashboard' : 'Login';
   }
 
-  get getStartedLabel(): string {
-    return this.isAuthenticated() ? 'Go to Dashboard' : 'Get Started';
-  }
-
   get heroCtaLabel(): string {
-    return this.isAuthenticated() ? 'Go to Dashboard' : 'Get Started Free';
+    return this.isAuthenticated() ? 'Go to Dashboard' : 'Login';
   }
 }

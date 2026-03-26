@@ -7,7 +7,7 @@ import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors'
 import { SidebarComponent } from '../../../../shared/components/sidebar/sidebar';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { LoadingComponent } from '../../../../shared/components/loading/loading';
-import { StatusChartComponent } from '../../../admin/components/status-chart/status-chart';
+import { StatusChartComponent } from '../../../../shared/components/status-chart/status-chart';
 import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
 

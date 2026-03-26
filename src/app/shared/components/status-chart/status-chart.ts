@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
-import { StatDataPoint } from '../../../../models/statistics.model';
+import { StatDataPoint } from '../../../models/statistics.model';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 

@@ -9,7 +9,7 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading'
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { selectStatisticsData, selectStatisticsLoading } from '../../store/statistics.selectors';
-import { StatusChartComponent } from '../../components/status-chart/status-chart';
+import { StatusChartComponent } from '../../../../shared/components/status-chart/status-chart';
 
 @Component({
   selector: 'app-admin-dashboard',

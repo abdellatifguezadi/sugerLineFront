@@ -8,26 +8,6 @@ export const selectUser = createSelector(
   (state) => state.user
 );
 
-export const selectUserId = createSelector(
-  selectUser,
-  (user) => user?.id
-);
-
-export const selectUsername = createSelector(
-  selectUser,
-  (user) => user?.username
-);
-
-export const selectEmail = createSelector(
-  selectUser,
-  (user) => user?.email
-);
-
-export const selectFullName = createSelector(
-  selectUser,
-  (user) => user?.fullName
-);
-
 export const selectRole = createSelector(
   selectUser,
   (user) => user?.role ?? null

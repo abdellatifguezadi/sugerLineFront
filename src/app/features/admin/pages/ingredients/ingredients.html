@@ -38,7 +38,7 @@
   <app-ingredient-form
     [ingredient]="selectedIngredient"
     [isEditMode]="isEditMode"
-    (submitForm)="onSubmit($event)"
+    (saved)="onIngredientSaved()"
     (cancel)="closeModal()">
   </app-ingredient-form>
 }

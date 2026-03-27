@@ -103,21 +103,7 @@ export class IngredientsComponent implements OnInit {
     this.isEditMode = false;
   }
 
-  onSubmit(formData: any): void {
-    if (this.isEditMode && this.selectedIngredient) {
-      this.store.dispatch(
-        IngredientActions.updateIngredient({
-          id: this.selectedIngredient.id,
-          ingredient: formData
-        })
-      );
-    } else {
-      this.store.dispatch(
-        IngredientActions.createIngredient({
-          ingredient: formData
-        })
-      );
-    }
+  onIngredientSaved(): void {
     this.closeModal();
   }
 

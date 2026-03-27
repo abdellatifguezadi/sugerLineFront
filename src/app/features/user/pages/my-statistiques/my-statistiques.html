@@ -43,8 +43,8 @@
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
               <p class="text-xs font-bold uppercase tracking-widest text-primary/60">Mois actuel</p>
-              <p class="mt-2 text-2xl font-black text-[#3c1e08]">{{ formatCurrency(stats.montantMoisActuel) }}</p>
-              <p class="mt-1 text-xs text-slate-500">Préc: {{ formatCurrency(stats.montantMoisPrecedent) }}</p>
+              <p class="mt-2 text-2xl font-black text-[#3c1e08]">{{ stats.montantMoisActuel | appCurrency }}</p>
+              <p class="mt-1 text-xs text-slate-500">Préc: {{ stats.montantMoisPrecedent | appCurrency }}</p>
             </div>
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">

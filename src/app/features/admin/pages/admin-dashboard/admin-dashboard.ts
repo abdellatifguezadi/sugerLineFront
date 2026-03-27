@@ -10,6 +10,7 @@ import { NavbarComponent } from '../../../../shared/components/navbar/navbar';
 import { selectIsLoading, selectRole } from '../../../auth/store/auth.selectors';
 import { selectStatisticsData, selectStatisticsLoading } from '../../store/statistics.selectors';
 import { StatusChartComponent } from '../../../../shared/components/status-chart/status-chart';
+import { CurrencyPipe } from '../../../../core/pipes/currency.pipe';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,7 +20,8 @@ import { StatusChartComponent } from '../../../../shared/components/status-chart
     SidebarComponent,
     NavbarComponent,
     StatusChartComponent,
-    LoadingComponent
+    LoadingComponent,
+    CurrencyPipe
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
@@ -37,14 +39,6 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(StatisticsActions.loadStatistics());
-  }
-
-  formatCurrency(value: number): string {
-    return new Intl.NumberFormat('fr-MA', {
-      style: 'currency',
-      currency: 'MAD',
-      minimumFractionDigits: 0
-    }).format(value);
   }
 
   formatPercent(value: number): string {

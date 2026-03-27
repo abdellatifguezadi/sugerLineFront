@@ -23,7 +23,7 @@
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
               <p class="text-xs font-bold uppercase tracking-widest text-primary/60">Revenu Total</p>
-              <p class="mt-2 text-2xl font-black text-[#3c1e08]">{{ formatCurrency(stats.revenuTotal) }}</p>
+              <p class="mt-2 text-2xl font-black text-[#3c1e08]">{{ stats.revenuTotal | appCurrency }}</p>
               <p class="mt-1 text-xs font-semibold" [class.text-emerald-600]="stats.tauxCroissanceRevenu >= 0" [class.text-red-500]="stats.tauxCroissanceRevenu < 0">
                 {{ formatPercent(stats.tauxCroissanceRevenu) }} vs mois préc.
               </p>
@@ -32,15 +32,15 @@
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
               <p class="text-xs font-bold uppercase tracking-widest text-primary/60">Bénéfice Net</p>
               <p class="mt-2 text-2xl font-black" [class.text-emerald-600]="stats.beneficeNet >= 0" [class.text-red-500]="stats.beneficeNet < 0">
-                {{ formatCurrency(stats.beneficeNet) }}
+                {{ stats.beneficeNet | appCurrency }}
               </p>
-              <p class="mt-1 text-xs text-slate-500">Charges: {{ formatCurrency(stats.chargesTotal) }}</p>
+              <p class="mt-1 text-xs text-slate-500">Charges: {{ stats.chargesTotal | appCurrency }}</p>
             </div>
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">
               <p class="text-xs font-bold uppercase tracking-widest text-primary/60">Mois Actuel</p>
-              <p class="mt-2 text-2xl font-black text-[#3c1e08]">{{ formatCurrency(stats.revenuMoisActuel) }}</p>
-              <p class="mt-1 text-xs text-slate-500">Préc: {{ formatCurrency(stats.revenuMoisPrecedent) }}</p>
+              <p class="mt-2 text-2xl font-black text-[#3c1e08]">{{ stats.revenuMoisActuel | appCurrency }}</p>
+              <p class="mt-1 text-xs text-slate-500">Préc: {{ stats.revenuMoisPrecedent | appCurrency }}</p>
             </div>
 
             <div class="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm">

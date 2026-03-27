@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Ingredient } from '../../../../models/ingredient.model';
+import { Store } from '@ngrx/store';
+import { Ingredient, IngredientRequest, IngredientUpdate } from '../../../../models/ingredient.model';
+import * as IngredientActions from '../../store/ingredient.actions';
 
 @Component({
   selector: 'app-ingredient-form',
@@ -13,10 +15,11 @@ import { Ingredient } from '../../../../models/ingredient.model';
 export class IngredientFormComponent implements OnInit {
   @Input() ingredient: Ingredient | null = null;
   @Input() isEditMode = false;
-  @Output() submitForm = new EventEmitter<any>();
+  @Output() saved = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
+  private store = inject(Store);
 
   ingredientForm: FormGroup = this.fb.group({
     nom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -32,9 +35,29 @@ export class IngredientFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.ingredientForm.valid) {
-      this.submitForm.emit(this.ingredientForm.value);
+    if (this.ingredientForm.invalid) {
+      this.ingredientForm.markAllAsTouched();
+      return;
     }
+
+    const payload = this.ingredientForm.value as IngredientRequest;
+
+    if (this.isEditMode && this.ingredient) {
+      this.store.dispatch(
+        IngredientActions.updateIngredient({
+          id: this.ingredient.id,
+          ingredient: payload as IngredientUpdate
+        })
+      );
+    } else {
+      this.store.dispatch(
+        IngredientActions.createIngredient({
+          ingredient: payload
+        })
+      );
+    }
+
+    this.saved.emit();
   }
 
   onCancel(): void {

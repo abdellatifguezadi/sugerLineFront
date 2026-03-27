@@ -10,6 +10,7 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading'
 import { StatusChartComponent } from '../../../../shared/components/status-chart/status-chart';
 import { ToastService } from '../../../../core/services/toast.service';
 import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
+import { CurrencyPipe as AppCurrencyPipe } from '../../../../core/pipes/currency.pipe';
 
 @Component({
   selector: 'app-my-statistiques',
@@ -19,7 +20,8 @@ import { getHttpErrorMessage } from '../../../../core/utils/error.utils';
     SidebarComponent,
     NavbarComponent,
     LoadingComponent,
-    StatusChartComponent
+    StatusChartComponent,
+    AppCurrencyPipe
   ],
   templateUrl: './my-statistiques.html',
   styleUrl: './my-statistiques.css'
@@ -70,14 +72,6 @@ export class MyStatistiquesComponent implements OnInit {
         count: d.count ?? d.value ?? 0
       }))
     };
-  }
-
-  formatCurrency(value: number): string {
-    return new Intl.NumberFormat('fr-MA', {
-      style: 'currency',
-      currency: 'MAD',
-      minimumFractionDigits: 0
-    }).format(value ?? 0);
   }
 
   formatPercent(value: number): string {

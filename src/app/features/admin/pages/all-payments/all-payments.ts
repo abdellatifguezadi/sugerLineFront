@@ -68,6 +68,12 @@ export class AllPaymentsComponent implements OnInit {
 
   tableActions = [
     {
+      label: 'View',
+      icon: 'visibility',
+      class: 'rounded-lg border border-blue-200 p-2 text-blue-600 transition-colors hover:bg-blue-50',
+      callback: (_item: PaiementWithCommande) => {}
+    },
+    {
       label: 'Accepter',
       icon: 'check_circle',
       class: 'rounded-lg border border-green-200 p-2 text-green-600 transition-colors hover:bg-green-50',

@@ -58,6 +58,15 @@ export class MyPaymentsComponent implements OnInit {
     }
   ];
 
+  tableActions = [
+    {
+      label: 'View',
+      icon: 'visibility',
+      class: 'rounded-lg border border-blue-200 p-2 text-blue-600 transition-colors hover:bg-blue-50',
+      callback: (_item: PaiementWithCommande) => {}
+    }
+  ];
+
   ngOnInit(): void {
     this.loadPaiements();
   }

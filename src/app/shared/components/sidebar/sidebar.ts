@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
 import { LoadingComponent } from '../loading/loading';
+import { selectUser } from '../../../features/auth/store/auth.selectors';
 
 type SidebarItem = {
   label: string;
@@ -22,6 +25,11 @@ export class SidebarComponent {
   @Input() isLoading = true;
   @Input() mobileOpen = false;
   @Output() mobileOpenChange = new EventEmitter<boolean>();
+  private store = inject(Store);
+
+  user$ = this.store.select(selectUser);
+  userName$ = this.user$.pipe(map((u) => u?.fullName ?? u?.username ?? null));
+  userRole$ = this.user$.pipe(map((u) => u?.role ?? this.role ?? null));
 
   closeMobile(): void {
     this.mobileOpenChange.emit(false);

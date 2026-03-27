@@ -31,7 +31,7 @@ export class ProductFormComponent implements OnInit {
   ingredients: Ingredient[] = [];
   productForm: FormGroup = this.fb.group({
     nom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-    prixVente: [0, [Validators.required, Validators.min(0)]],
+    prixVente: [1, [Validators.required, Validators.min(1)]],
     ingredientProduits: this.fb.array([])
   });
 

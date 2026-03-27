@@ -94,7 +94,8 @@ export class MyCommandesComponent implements OnInit {
   private canPay = (item: any) => {
     if ((item?.statut ?? '') !== StatutCommande.LIVREE) return false;
     const p = item?.paiement;
-    return !p || (p.statut && String(p.statut).toUpperCase() === 'ANNULE');
+    return p.statut?.toUpperCase() === 'ANNULE';
+
   };
 
   tableActions: TableAction[] = [
